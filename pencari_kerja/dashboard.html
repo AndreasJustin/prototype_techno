@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Pencari Kerja - NaviKarir</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">                            <ul class="dropdown-menu dropdown-menu-end">
+        <li><a class="dropdown-item" href="./profil-perusahaan.html"><i class="fas fa-user me-2"></i>Profil</a></li>
+        <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Pengaturan</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item text-danger" href="./login.html"><i class="fas fa-sign-out-alt me-2"></i>Keluar</a></li>
+    </ul><!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #64748b;
+            --accent-color: #f59e0b;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --light-bg: #f8fafc;
+            --dark-text: #1e293b;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--dark-text);
+            background-color: var(--light-bg);
+        }
+
+        /* Header Styles */
+        .main-header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-color) !important;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: var(--secondary-color) !important;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary-color) !important;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            background: white;
+            min-height: calc(100vh - 76px);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            padding: 0;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 1rem 0;
+        }
+
+        .sidebar-menu li {
+            margin: 0;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background-color: var(--light-bg);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+        }
+
+        .sidebar-menu i {
+            width: 20px;
+            margin-right: 12px;
+            font-size: 1.1rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            background: white;
+            min-height: calc(100vh - 76px);
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--dark-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+        }
+
+        /* Cards */
+        .card {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            background-color: var(--light-bg);
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+        }
+
+        /* Stats Cards */
+        .stats-card {
+            background: linear-gradient(135deg, var(--primary-color), #1d4ed8);
+            color: white;
+            border: none;
+        }
+
+        .stats-card.success {
+            background: linear-gradient(135deg, var(--success-color), #059669);
+        }
+
+        .stats-card.warning {
+            background: linear-gradient(135deg, var(--accent-color), #d97706);
+        }
+
+        .stats-card.info {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+        }
+
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Recent Activity */
+        .recent-activity {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .activity-item {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .activity-icon.new {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+        }
+
+        .activity-icon.update {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--accent-color);
+        }
+
+        .activity-icon.delete {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+        }
+
+        /* Notification badge */
+        .sidebar-menu .badge {
+            font-size: 0.7rem;
+            padding: 0.25em 0.5em;
+        }
+
+        /* AI highlight styles */
+        .ai-highlight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+        }
+
+        /* Match score styling */
+        .match-score {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .match-score.high {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+        }
+
+        .match-score.medium {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--accent-color);
+        }
+
+        /* Notification badge */
+        .sidebar-menu .badge {
+            font-size: 0.7rem;
+            padding: 0.25em 0.5em;
+        }
+
+        /* AI highlight styles */
+        .ai-highlight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+        }
+
+        /* Match score styling */
+        .match-score {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .match-score.high {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+        }
+
+        .match-score.medium {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--accent-color);
+        }
+
+        /* Notification badge */
+        .sidebar-menu .badge {
+            font-size: 0.7rem;
+            padding: 0.25em 0.5em;
+        }
+
+        /* AI highlight styles */
+        .ai-highlight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+        }
+
+        /* Match score styling */
+        .match-score {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .match-score.high {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+        }
+
+        .match-score.medium {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--accent-color);
+        }
+
+        /* Large screens optimization */
+        @media (min-width: 1400px) {
+            .stats-card {
+                min-height: 140px;
+            }
+            
+            .main-content {
+                padding: 2rem;
+            }
+            
+            .page-title {
+                font-size: 2.5rem;
+            }
+        }
+        
+        /* Landscape tablet optimization */
+        @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+            .sidebar {
+                min-width: 200px;
+            }
+            
+            .main-content {
+                padding: 1.5rem;
+            }
+            
+            .stats-card {
+                min-height: 120px;
+            }
+            
+            .card-body {
+                padding: 1rem;
+            }
+        }
+        
+        /* Standard responsive breakpoints */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -100%;
+                top: 76px;
+                width: 280px;
+                height: calc(100vh - 76px);
+                transition: left 0.3s ease;
+                z-index: 999;
+            }
+
+            .sidebar.show {
+                left: 0;
+            }
+
+            .main-content {
+                margin: 1rem 0.5rem;
+                padding: 1rem;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .stats-number {
+                font-size: 2rem;
+            }
+            
+            .stats-card {
+                min-height: 100px;
+            }
+        }
+        
+        /* Mobile landscape */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .stats-card {
+                min-height: 80px;
+            }
+            
+            .stats-number {
+                font-size: 1.5rem;
+            }
+            
+            .card-body {
+                padding: 0.75rem;
+            }
+            
+            .btn {
+                font-size: 0.875rem;
+                padding: 0.5rem 1rem;
+            }
+        }
+        
+        /* Ultra wide screens */
+        @media (min-width: 1600px) {
+            .main-content {
+                max-width: 1400px;
+                margin: 0 auto;
+            }
+            
+            .stats-card {
+                min-height: 160px;
+            }
+            
+            .card {
+                border-radius: 12px;
+            }
+        }
+        
+        /* Button responsive adjustments */
+        @media (max-width: 576px) {
+            .btn i {
+                display: block !important;
+                margin-bottom: 0.25rem;
+                margin-right: 0 !important;
+            }
+        }
+    </style>
+
+    
+    <style>
+      #automationRange {
+        appearance: none;
+        width: 100%;
+        height: 8px;
+        border-radius: 5px;
+        background: linear-gradient(to right, #dc3545 20%, #dee2e6 20%);
+      }
+
+      /* track untuk chrome/edge */
+      #automationRange::-webkit-slider-runnable-track {
+        height: 8px;
+        border-radius: 5px;
+        background: transparent; /* transparan supaya background element utama yang kelihatan */
+      }
+
+      /* thumb untuk chrome/edge */
+      #automationRange::-webkit-slider-thumb {
+        appearance: none;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background-color: #dc3545;
+        cursor: pointer;
+        margin-top: -4px; /* biar thumb pas di tengah track */
+      }
+      /* fill colour on hover */
+      .btn-outline-primary:hover{
+        background-color: var(--bs-primary);
+        color: #fff;
+      }
+    </style>
+
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container-fluid">
+                <!-- Brand -->
+                <a class="navbar-brand" href="../index.html">
+                    <i class="fas fa-briefcase me-2"></i>NaviKarir
+                </a>
+
+                <!-- Mobile Toggle -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Navigation -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./modules.html">Modul Skill</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./pencarian-lowongan.html">Pencarian Lowongan</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./pesan.html">Pesan</a>
+                        </li>
+                    </ul>
+
+                    <!-- User Menu -->
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user-circle me-1"></i>
+                                <span>Nama Mahasiswa</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="./profil-perusahaan.html"><i class="fas fa-user me-2"></i>Profil</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Pengaturan</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="./login.html"><i class="fas fa-sign-out-alt me-2"></i>Keluar</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="container-fluid">
+        <div class="row">
+          <!-- Main Content -->
+          <main class="container py-4">
+            <div class="row g-4">
+              <!-- Sidebar -->
+              <aside class="col-lg-3">
+                <div class="card shadow-sm mb-4">
+                  <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                      <img src="asset/Mucha.png" alt="avatar" class="rounded-circle border shadow-sm" width="64" height="64">
+                      <div class="ms-3">
+                        <h5 class="mb-0">Nama Mahasiswa</h5>
+                        <small class="text-muted">Teknik Informatika — Universitas X</small>
+                      </div>
+                    </div>
+
+                    <h6 class="text-uppercase text-muted small mb-2">Skill Utama</h6>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                      <span class="badge bg-primary-subtle text-primary">Java</span>
+                      <span class="badge bg-primary-subtle text-primary">HTML</span>
+                      <span class="badge bg-primary-subtle text-primary">CSS</span>
+                      <span class="badge bg-primary-subtle text-primary">Python</span>
+                      <span class="badge bg-primary-subtle text-primary">Web Dev</span>
+                      <span class="badge bg-primary-subtle text-primary">Data Analysis</span>
+                    </div>
+
+                    <h6 class="text-uppercase text-muted small mb-2">Kesiapan Kerja</h6>
+                    <div class="progress mb-1" style="height:6px;">
+                      <div id="readinessBar" class="progress-bar bg-primary" style="width:70%"></div>
+                    </div>
+                    <small class="text-muted">Readiness: <span id="readinessPct">70%</span></small>
+
+                    <button id="editProfile" class="btn btn-primary w-100 mt-3">Edit Profil</button>
+                  </div>
+                </div>
+
+                <div class="card shadow-sm">
+                  <div class="card-body">
+                    <h6 class="fw-medium mb-2">Tips Cepat</h6>
+                    <ul class="small text-muted mb-0">
+                      <li>Perbarui CV dengan kata kunci proyek.</li>
+                      <li>Ikuti kursus singkat yang direkomendasikan.</li>
+                      <li>Siapkan portofolio 1–3 proyek terbaik.</li>
+                    </ul>
+                  </div>
+                </div>
+              </aside>
+
+              <!-- Form -->
+              <section class="col-lg-9">
+                <div class="card shadow-sm">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                      <div>
+                        <h4 class="mb-0">Analisis Karir</h4>
+                        <small class="text-muted">Isi field berikut untuk mendapatkan rekomendasi jalur karir.</small>
+                      </div>
+                      <small class="text-muted">Last analysis: <span id="lastAnalysis">None</span></small>
+                    </div>
+
+                    <form id="careerForm" class="row gy-3">
+                      <div class="col-md-6">
+                        <label for="major" class="form-label">Gelar / Jurusan</label>
+                        <input type="text" class="form-control" id="major" name="major" placeholder="Contoh: Teknik Informatika">
+                      </div>
+
+                      <div class="col-md-6">
+                        <label for="exp" class="form-label">Tingkat Pengalaman</label>
+                        <select class="form-select" id="exp" name="exp">
+                          <option value="fresh">Fresh Graduate</option>
+                          <option value="0-1">0 - 1 tahun</option>
+                          <option value="1-2">1 - 2 tahun</option>
+                        </select>
+                      </div>
+
+                      <div class="col-12">
+                        <label for="skills" class="form-label">Skill Utama (pisahkan dengan koma)</label>
+                        <input type="text" class="form-control" id="skills" name="skills" placeholder="Contoh: Python, SQL, UI/UX">
+                      </div>
+
+                      <div class="mb-3">
+                        <label class="form-label">Pilih Minat Karier</label>
+                        <div class="row g-2">
+                          <div class="col-6 col-sm-3">
+                            <input type="checkbox" class="btn-check" id="interest-teknologi" autocomplete="off" name="interest" value="teknologi">
+                            <label class="btn btn-outline-primary w-100" for="interest-teknologi">Teknologi</label>
+                          </div>
+                          <div class="col-6 col-sm-3">
+                            <input type="checkbox" class="btn-check" id="interest-bisnis" autocomplete="off" name="interest" value="bisnis">
+                            <label class="btn btn-outline-primary w-100" for="interest-bisnis">Bisnis</label>
+                          </div>
+                          <div class="col-6 col-sm-3">
+                            <input type="checkbox" class="btn-check" id="interest-desain" autocomplete="off" name="interest" value="desain">
+                            <label class="btn btn-outline-primary w-100" for="interest-desain">Desain</label>
+                          </div>
+                          <div class="col-6 col-sm-3">
+                            <input type="checkbox" class="btn-check" id="interest-sains" autocomplete="off" name="interest" value="sains">
+                            <label class="btn btn-outline-primary w-100" for="interest-sains">Sains</label>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-12">
+                        <label class="form-label">Preferensi Risiko Otomasi AI</label>
+                        <input id="automationRange" type="range" class="form-range" min="0" max="100" value="20">
+                        <small class="text-muted">
+                          Tingkat preferensi otomatisasi: <span id="automationVal">20</span>%
+                        </small>
+                      </div>
+
+                      <div class="col-md-6">
+                        <label for="transkrip" class="form-label">Unggah Transkrip Nilai</label>
+                        <input class="form-control" type="file" id="transkrip" name="transkrip"
+                          onchange="document.getElementById('file-name1').textContent = this.files.length ? this.files[0].name : 'Belum ada file yang dipilih'">
+                        <div id="file-name1" class="small text-muted mt-1 text-truncate">Belum ada file yang dipilih</div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <label for="cv" class="form-label">Unggah CV (opsional)</label>
+                        <input class="form-control" type="file" id="cv" name="cv"
+                          onchange="document.getElementById('file-name2').textContent = this.files.length ? this.files[0].name : 'Belum ada file yang dipilih'">
+                        <div id="file-name2" class="small text-muted mt-1 text-truncate">Belum ada file yang dipilih</div>
+                      </div>
+
+                      <div class="col-12 d-flex align-items-center gap-2">
+                        <button type="button" id="analyzeBtn" class="btn btn-primary">Analisis Karir</button>
+                        <button type="reset" class="btn btn-outline-secondary">Reset</button>
+                        <div id="status" class="small text-muted"></div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </main>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-0">&copy; 2025 NaviKarir - Platform Rekrutmen AI untuk Mahasiswa Indonesia</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0">MVP v1.0 | <a href="#">Panduan AI</a> | <a href="#">Support</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      const range = document.getElementById('automationRange');
+      const val   = document.getElementById('automationVal');
+
+      function updateRange() {
+        const percent = (range.value - range.min) / (range.max - range.min) * 100;
+        val.textContent = range.value;
+        range.style.background =
+          `linear-gradient(to right, #dc3545 ${percent}%, #dee2e6 ${percent}%)`;
+      }
+      updateRange();
+      range.addEventListener('input', updateRange);
+    </script>
+
+    <script>
+      const automationRange = document.getElementById('automationRange');
+      const automationVal = document.getElementById('automationVal');
+      automationRange.addEventListener('input', e => automationVal.textContent = e.target.value);
+
+      const analyzeBtn = document.getElementById('analyzeBtn');
+      const status = document.getElementById('status');
+
+      analyzeBtn.addEventListener('click', () => {
+        const major = document.getElementById('major').value.trim();
+        const skills = document.getElementById('skills').value.trim();
+
+        if (!major && !skills) {
+          status.textContent = 'Isi minimal jurusan atau skill untuk analisis.';
+          status.classList.remove('text-muted');
+          status.classList.add('text-danger'); 
+          return;
+        }
+
+        status.textContent = 'Menganalisis...';
+        status.classList.remove('text-danger');
+        analyzeBtn.disabled = true;
+        analyzeBtn.textContent = 'Sedang menganalisis...';
+
+        // simulasi loading sebentar
+        setTimeout(() => {
+          analyzeBtn.disabled = false;
+          analyzeBtn.textContent = 'Analisis Karir';
+          status.textContent = '';
+
+          // redirect ke halaman hasil
+          window.location.href = 'result.html'; // ganti nama file sesuai file hasilmu
+        }, 1100);
+      });
+    </script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // Mobile sidebar toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarToggle = document.querySelector('.navbar-toggler');
+            const sidebar = document.querySelector('.sidebar');
+            
+            if (sidebarToggle && sidebar) {
+                sidebarToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('show');
+                });
+                
+                document.addEventListener('click', function(e) {
+                    if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+                        sidebar.classList.remove('show');
+                    }
+                });
+            }
+
+            // Initialize Chart
+            const ctx = document.getElementById('applicationChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Minggu 1', 'Minggu 2', 'Minggu 3', 'Minggu 4'],
+                    datasets: [{
+                        label: 'Aplikasi Masuk',
+                        data: [42, 65, 78, 86],
+                        borderColor: '#2563eb',
+                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }, {
+                        label: 'AI Match >85%',
+                        data: [18, 28, 35, 43],
+                        borderColor: '#8b5cf6',
+                        backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }, {
+                        label: 'Hired',
+                        data: [8, 12, 15, 18],
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: '#e2e8f0'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: '#e2e8f0'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

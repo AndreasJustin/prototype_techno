@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lowongan Kerja - NaviKarir</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #64748b;
+            --accent-color: #f59e0b;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --light-bg: #f8fafc;
+            --dark-text: #1e293b;
+            --border-color: #e2e8f0;
+            --ai-color: #8b5cf6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--dark-text);
+            background-color: var(--light-bg);
+        }
+
+        /* Common styles */
+        .main-header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-color) !important;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: var(--secondary-color) !important;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary-color) !important;
+        }
+
+        .sidebar {
+            background: white;
+            min-height: calc(100vh - 76px);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            padding: 0;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 1rem 0;
+        }
+
+        .sidebar-menu li {
+            margin: 0;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background-color: var(--light-bg);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+        }
+
+        .sidebar-menu i {
+            width: 20px;
+            margin-right: 12px;
+            font-size: 1.1rem;
+        }
+
+        .main-content {
+            background: white;
+            min-height: calc(100vh - 76px);
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--dark-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+        }
+
+        .card {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            background-color: var(--light-bg);
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+        }
+
+        /* AI Powered Features */
+        .ai-section {
+            background: linear-gradient(135deg, var(--ai-color), #7c3aed);
+            color: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .ai-badge {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        /* Match Score */
+        .match-score {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .match-excellent {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+        }
+
+        .match-good {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--accent-color);
+        }
+
+        .match-fair {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+        }
+
+        /* Candidate Card */
+        .candidate-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .candidate-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .company-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .skill-tag {
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+            padding: 0.25rem 0.5rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            margin: 0.125rem;
+            display: inline-block;
+        }
+
+        .university-badge {
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+            padding: 0.125rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            background: var(--light-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .filter-group {
+            margin-bottom: 1rem;
+        }
+
+        .filter-group:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Search Input */
+        .search-input {
+            border: 1px solid var(--border-color);
+            border-radius: 25px;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
+        }
+
+        /* Button Styles */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), #1d4ed8);
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+        }
+
+        .btn-ai {
+            background: linear-gradient(135deg, var(--ai-color), #7c3aed);
+            border: none;
+            color: white;
+            border-radius: 25px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+        }
+
+        .btn-outline-primary {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+        }
+
+        /* Stats */
+        .search-stats {
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -100%;
+                top: 76px;
+                width: 280px;
+                height: calc(100vh - 76px);
+                transition: left 0.3s ease;
+                z-index: 999;
+            }
+
+            .sidebar.show {
+                left: 0;
+            }
+
+            .main-content {
+                margin: 1rem 0.5rem;
+                padding: 1.5rem;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .ai-section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container-fluid">
+                <!-- Brand -->
+                <a class="navbar-brand" href="../index.html">
+                    <i class="fas fa-briefcase me-2"></i>NaviKarir
+                </a>
+
+                <!-- Mobile Toggle -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Navigation -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="./dashboard.html">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./modules.html">Modul Skill</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="./pencarian-perusahaan.html">Pencarian Lowongan</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./pesan.html">Pesan</a>
+                        </li>
+                    </ul>
+
+                    <!-- User Menu -->
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user-circle me-1"></i>
+                                <span>Nama Mahasiswa</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="./profil-perusahaan.html"><i class="fas fa-user me-2"></i>Profil</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Pengaturan</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="./login.html"><i class="fas fa-sign-out-alt me-2"></i>Keluar</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Main Content -->
+            <main class="ms-sm-auto">
+                <div class="main-content">
+                    <!-- Page Header -->
+                    <div class="page-header">
+                        <h1 class="page-title">Pencarian Lowongan AI</h1>
+                        <p class="page-subtitle">Temukan lowongan paling sesuai dengan teknologi AI yang canggih dan filter cerdas</p>
+                    </div>
+
+                    <!-- Breadcrumb -->
+                    <nav aria-label="breadcrumb" class="mb-4">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="./dashboard.html">Dashboard</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Pencarian Lowongan</li>
+                        </ol>
+                    </nav>
+
+                    <!-- AI Powered Section -->
+                    <div class="ai-section">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <div class="d-flex align-items-center mb-2">
+                                    <span class="ai-badge me-2">
+                                        <i class="fas fa-robot me-1"></i>AI Powered
+                                    </span>
+                                    <h4 class="mb-0">Pencarian Cerdas</h4>
+                                </div>
+                                <p class="mb-3 opacity-90">AI kami menganalisis lebih dari 50 faktor untuk menemukan lowongan yang paling sesuai dengan keterampilan Anda.</p>
+                                <div class="row">
+                                    <div class="col-sm-4 text-center">
+                                        <h3 class="mb-1">89%</h3>
+                                        <small>Akurasi Matching</small>
+                                    </div>
+                                    <div class="col-sm-4 text-center">
+                                        <h3 class="mb-1">2,847</h3>
+                                        <small>Lowongan Aktif</small>
+                                    </div>
+                                    <div class="col-sm-4 text-center">
+                                        <h3 class="mb-1">43</h3>
+                                        <small>Match Hari Ini</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <button class="btn btn-light btn-lg">
+                                    <i class="fas fa-magic me-2"></i>
+                                    Gunakan AI Matching
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Search & Filter -->
+                    <div class="filter-section">
+                        <div class="row g-3">
+                            <!-- Main Search -->
+                            <div class="col-md-8">
+                                <input type="text" class="form-control search-input" placeholder="Cari berdasarkan nama, bidang industri, status lowongan, atau lokasi...">
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn btn-ai w-100">
+                                    <i class="fas fa-search me-2"></i>Cari dengan AI
+                                </button>
+                            </div>
+
+                            <!-- Filters Row 1 -->
+                            <div class="col-lg-3 col-md-6">
+                                <select class="form-select" id="universityFilter">
+                                    <option value="">Semua Perusahaan</option>
+                                    <option value="PT Gojek Indonesia">PT Gojek Indonesia</option>
+                                    <option value="PT Tokopedia">PT Tokopedia</option>
+                                    <option value="Bank Negara Indonesia">Bank Negara Indonesia</option>
+                                    <option value="PT Indofood">PT Indofood</option>
+                                    <option value="PT Astra International">PT Astra International</option>
+                                    <option value="BPJS Kesehatan">BPJS Kesehatan</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <select class="form-select" id="majorFilter">
+                                    <option value="">Semua Bidang Industri</option>
+                                    <option value="Teknologi">Teknologi</option>
+                                    <option value="Transportasi">Transportasi</option>
+                                    <option value="E-Commerce">E-Commerce</option>
+                                    <option value="Telekomunikasi">Telekomunikasi</option>
+                                    <option value="Perbankan">Perbankan</option>
+                                    <option value="Manufaktur Makanan">Manufaktur Makanan</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <select class="form-select" id="graduationYear">
+                                    <option value="">Status Lowongan</option>
+                                    <option value="2024">High Demand</option>
+                                    <option value="2025">Urgent Hire</option>
+                                    <option value="2026">Sedang Membuka</option>
+                                    <option value="2027">Open Internship</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <select class="form-select" id="locationFilter">
+                                    <option value="">Semua Lokasi</option>
+                                    <option value="jakarta">Jakarta</option>
+                                    <option value="bandung">Bandung</option>
+                                    <option value="surabaya">Surabaya</option>
+                                    <option value="yogyakarta">Yogyakarta</option>
+                                    <option value="semarang">Semarang</option>
+                                </select>
+                            </div>
+
+                            <!-- Advanced Filters Toggle -->
+                            <div class="col-12">
+                                <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#advancedFilters">
+                                    <i class="fas fa-sliders-h me-2"></i>Filter Lanjutan
+                                </button>
+                            </div>
+
+                            <!-- Advanced Filters -->
+                            <div class="collapse" id="advancedFilters">
+                                <div class="row g-3 mt-2">
+                                    <div class="col-md-3">
+                                        <label class="form-label">Tingkat Perusahaan</label>
+                                        <select class="form-select">
+                                            <option value="">Semua Tingkat</option>
+                                            <option value="CV">CV</option>
+                                            <option value="PT">PT</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">AI Match Score</label>
+                                        <select class="form-select">
+                                            <option value="">Semua Score</option>
+                                            <option value="90">90%+</option>
+                                            <option value="85">85%+</option>
+                                            <option value="80">80%+</option>
+                                            <option value="75">75%+</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Search Results Stats -->
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-8">
+                            <div class="search-stats">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="fw-semibold">43 Lowongan</span> ditemukan
+                                        <span class="text-muted">• Diurutkan berdasarkan AI Match Score</span>
+                                    </div>
+                                    <div class="d-flex gap-2">
+                                        <select class="form-select form-select-sm" style="width: auto;">
+                                            <option>AI Match Score</option>
+                                            <option>PT</option>
+                                        </select>
+                                        <button class="btn btn-outline-secondary btn-sm">
+                                            <i class="fas fa-download me-1"></i>Export
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="search-stats text-center">
+                                <div class="fw-semibold text-success">12 Lowongan</div>
+                                <small class="text-muted">Match score 85%+</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Companies / Vacancies List -->
+                    <div class="row g-4">
+
+                    <!-- Company Card 1 -->
+                    <div class="col-lg-6 col-xl-4">
+                        <div class="card company-card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span class="match-score match-excellent">High Demand</span>
+                            <div class="dropdown">
+                            <button class="btn btn-sm" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="./profil-perusahaan.html"><i class="fas fa-eye me-2"></i>Lihat Profil</a></li>
+                                <li><a class="dropdown-item" href="./hubungi.html"><i class="fas fa-comment me-2"></i>Hubungi</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-heart me-2"></i>Simpan Perusahaan</a></li>
+                            </ul>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex align-items-start mb-3">
+                            <img src="../pencari_kerja/asset/NaviKarir.png" alt="Gojek" class="company-logo me-3">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1">PT Gojek Indonesia</h6>
+                                <div class="industry-badge mb-2">Teknologi & Transportasi</div>
+                                <p class="text-muted small mb-0">Jakarta • 5000+ karyawan</p>
+                                <p class="text-muted small">Sejak 2010</p>
+                            </div>
+                            </div>
+
+                            <div class="mb-3">
+                            <div class="fw-semibold small mb-1">📌 Lowongan: Frontend Developer</div>
+                            <p class="text-muted small mb-2">Membutuhkan frontend engineer untuk pengembangan aplikasi web dan mobile. Tim berskala besar dan agile.</p>
+                            </div>
+
+                            <div class="mb-3">
+                            <div class="small text-muted mb-1">Keterampilan yang Dibutuhkan:</div>
+                            <div>
+                                <span class="skill-tag">React</span>
+                                <span class="skill-tag">TypeScript</span>
+                                <span class="skill-tag">CSS</span>
+                            </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="fas fa-clock me-1"></i>Diposting 2 hari lalu
+                            </small>
+                            <div>
+                                <button class="btn btn-outline-primary btn-sm me-2">
+                                <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn btn-primary btn-sm">
+                                <i class="fas fa-paper-plane me-1"></i>Lamar
+                                </button>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+                    <!-- Company Card 2 -->
+                    <div class="col-lg-6 col-xl-4">
+                        <div class="card company-card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span class="match-score match-excellent">Urgent Hire</span>
+                            <div class="dropdown">
+                            <button class="btn btn-sm" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="./profil-perusahaan.html"><i class="fas fa-eye me-2"></i>Lihat Profil</a></li>
+                                <li><a class="dropdown-item" href="./hubungi.html"><i class="fas fa-comment me-2"></i>Hubungi</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-heart me-2"></i>Simpan Perusahaan</a></li>
+                            </ul>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex align-items-start mb-3">
+                            <img src="../pencari_kerja/asset/NaviKarir.png" alt="Tokopedia" class="company-logo me-3">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1">PT Tokopedia</h6>
+                                <div class="industry-badge mb-2">E-Commerce</div>
+                                <p class="text-muted small mb-0">Jakarta • 4000+ karyawan</p>
+                                <p class="text-muted small">Sejak 2009</p>
+                            </div>
+                            </div>
+
+                            <div class="mb-3">
+                            <div class="fw-semibold small mb-1">📌 Lowongan: Backend Developer</div>
+                            <p class="text-muted small mb-2">Berpengalaman dalam Node.js & Python untuk sistem berskala besar. Kesempatan kerja hybrid.</p>
+                            </div>
+
+                            <div class="mb-3">
+                            <div class="small text-muted mb-1">Keterampilan yang Dibutuhkan:</div>
+                            <div>
+                                <span class="skill-tag">Node.js</span>
+                                <span class="skill-tag">Python</span>
+                                <span class="skill-tag">MongoDB</span>
+                            </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="fas fa-clock me-1"></i>Diposting 1 minggu lalu
+                            </small>
+                            <div>
+                                <button class="btn btn-outline-primary btn-sm me-2">
+                                <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn btn-primary btn-sm">
+                                <i class="fas fa-paper-plane me-1"></i>Lamar
+                                </button>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+                    <!-- Company Card 3 -->
+                    <div class="col-lg-6 col-xl-4">
+                        <div class="card company-card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span class="match-score match-good">Sedang Membuka</span>
+                            <div class="dropdown">
+                            <button class="btn btn-sm" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="./profil-perusahaan.html"><i class="fas fa-eye me-2"></i>Lihat Profil</a></li>
+                                <li><a class="dropdown-item" href="./hubungi.html"><i class="fas fa-comment me-2"></i>Hubungi</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-heart me-2"></i>Simpan Perusahaan</a></li>
+                            </ul>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex align-items-start mb-3">
+                            <img src="../pencari_kerja/asset/NaviKarir.png" alt="Telkom Group" class="company-logo me-3">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1">Telkom Group</h6>
+                                <div class="industry-badge mb-2">Telekomunikasi</div>
+                                <p class="text-muted small mb-0">Bandung • 20000+ karyawan</p>
+                                <p class="text-muted small">Sejak 1965</p>
+                            </div>
+                            </div>
+
+                            <div class="mb-3">
+                            <div class="fw-semibold small mb-1">📌 Lowongan: UI/UX Designer</div>
+                            <p class="text-muted small mb-2">Bekerja pada tim inovasi digital untuk mendesain pengalaman pengguna aplikasi baru.</p>
+                            </div>
+
+                            <div class="mb-3">
+                            <div class="small text-muted mb-1">Keterampilan yang Dibutuhkan:</div>
+                            <div>
+                                <span class="skill-tag">Figma</span>
+                                <span class="skill-tag">Adobe XD</span>
+                                <span class="skill-tag">Research</span>
+                            </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted"><i class="fas fa-clock me-1"></i>Diposting 3 hari lalu</small>
+                            <div>
+                                <button class="btn btn-outline-primary btn-sm me-2"><i class="fas fa-eye"></i></button>
+                                <button class="btn btn-primary btn-sm"><i class="fas fa-paper-plane me-1"></i>Lamar</button>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+                    <!-- Company Card 4 -->
+                    <div class="col-lg-6 col-xl-4">
+                        <div class="card company-card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span class="match-score match-good">High Priority</span>
+                            <div class="dropdown">
+                            <button class="btn btn-sm" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="./profil-perusahaan.html"><i class="fas fa-eye me-2"></i>Lihat Profil</a></li>
+                                <li><a class="dropdown-item" href="./hubungi.html"><i class="fas fa-comment me-2"></i>Hubungi</a></li>
+                            </ul>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex align-items-start mb-3">
+                            <img src="../pencari_kerja/asset/NaviKarir.png" alt="Bank Negara" class="company-logo me-3">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1">Bank Negara</h6>
+                                <div class="industry-badge mb-2">Perbankan</div>
+                                <p class="text-muted small mb-0">Jakarta • 10000+ karyawan</p>
+                                <p class="text-muted small">Sejak 1950</p>
+                            </div>
+                            </div>
+
+                            <div class="mb-3">
+                            <div class="fw-semibold small mb-1">📌 Lowongan: Data Analyst</div>
+                            <p class="text-muted small mb-2">Analisa data transaksi besar untuk mendukung pengambilan keputusan bisnis.</p>
+                            </div>
+
+                            <div class="mb-3">
+                            <div class="small text-muted mb-1">Keterampilan yang Dibutuhkan:</div>
+                            <div>
+                                <span class="skill-tag">Python</span>
+                                <span class="skill-tag">SQL</span>
+                                <span class="skill-tag">Tableau</span>
+                            </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted"><i class="fas fa-clock me-1"></i>Diposting 5 hari lalu</small>
+                            <div>
+                                <button class="btn btn-outline-primary btn-sm me-2"><i class="fas fa-eye"></i></button>
+                                <button class="btn btn-primary btn-sm"><i class="fas fa-paper-plane me-1"></i>Lamar</button>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+                    <!-- Company Card 5 -->
+                    <div class="col-lg-6 col-xl-4">
+                        <div class="card company-card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span class="match-score match-good">New Opening</span>
+                            <div class="dropdown">
+                            <button class="btn btn-sm" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="./profil-perusahaan.html"><i class="fas fa-eye me-2"></i>Lihat Profil</a></li>
+                                <li><a class="dropdown-item" href="./hubungi.html"><i class="fas fa-comment me-2"></i>Hubungi</a></li>
+                            </ul>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex align-items-start mb-3">
+                            <img src="../pencari_kerja/asset/NaviKarir.png" alt="Indofood" class="company-logo me-3">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1">Indofood</h6>
+                                <div class="industry-badge mb-2">Manufaktur Makanan</div>
+                                <p class="text-muted small mb-0">Jakarta • 30000+ karyawan</p>
+                                <p class="text-muted small">Sejak 1980</p>
+                            </div>
+                            </div>
+
+                            <div class="mb-3">
+                            <div class="fw-semibold small mb-1">📌 Lowongan: Digital Marketing Specialist</div>
+                            <p class="text-muted small mb-2">Mengembangkan strategi pemasaran digital untuk produk makanan konsumen.</p>
+                            </div>
+
+                            <div class="mb-3">
+                            <div class="small text-muted mb-1">Keterampilan yang Dibutuhkan:</div>
+                            <div>
+                                <span class="skill-tag">Social Media</span>
+                                <span class="skill-tag">Content Writing</span>
+                                <span class="skill-tag">Analytics</span>
+                            </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted"><i class="fas fa-clock me-1"></i>Diposting 1 minggu lalu</small>
+                            <div>
+                                <button class="btn btn-outline-primary btn-sm me-2"><i class="fas fa-eye"></i></button>
+                                <button class="btn btn-primary btn-sm"><i class="fas fa-paper-plane me-1"></i>Lamar</button>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+                    <!-- Company Card 6 -->
+                    <div class="col-lg-6 col-xl-4">
+                        <div class="card company-card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span class="match-score match-fair">Hiring Soon</span>
+                            <div class="dropdown">
+                            <button class="btn btn-sm" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="./profil-perusahaan.html"><i class="fas fa-eye me-2"></i>Lihat Profil</a></li>
+                                <li><a class="dropdown-item" href="./hubungi.html"><i class="fas fa-comment me-2"></i>Hubungi</a></li>
+                            </ul>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex align-items-start mb-3">
+                            <img src="asset/NaviKarir.png" alt="Astra" class="company-logo me-3">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1">Astra International</h6>
+                                <div class="industry-badge mb-2">Otomotif</div>
+                                <p class="text-muted small mb-0">Jakarta • 40000+ karyawan</p>
+                                <p class="text-muted small">Sejak 1957</p>
+                            </div>
+                            </div>
+
+                            <div class="mb-3">
+                            <div class="fw-semibold small mb-1">📌 Lowongan: Mobile Developer</div>
+                            <p class="text-muted small mb-2">Mengembangkan aplikasi internal untuk mendukung operasional Astra Group.</p>
+                            </div>
+
+                            <div class="mb-3">
+                            <div class="small text-muted mb-1">Keterampilan yang Dibutuhkan:</div>
+                            <div>
+                                <span class="skill-tag">Flutter</span>
+                                <span class="skill-tag">Firebase</span>
+                                <span class="skill-tag">Git</span>
+                            </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted"><i class="fas fa-clock me-1"></i>Diposting 2 minggu lalu</small>
+                            <div>
+                                <button class="btn btn-outline-primary btn-sm me-2"><i class="fas fa-eye"></i></button>
+                                <button class="btn btn-primary btn-sm"><i class="fas fa-paper-plane me-1"></i>Lamar</button>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+                    <!-- Company Card 7 -->
+                    <div class="col-lg-6 col-xl-4">
+                        <div class="card company-card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <span class="match-score match-fair">Open Internship</span>
+                                <div class="dropdown">
+                                <button class="btn btn-sm" type="button" data-bs-toggle="dropdown">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="./profil-perusahaan.html"><i class="fas fa-eye me-2"></i>Lihat Profil</a></li>
+                                    <li><a class="dropdown-item" href="./hubungi.html"><i class="fas fa-comment me-2"></i>Hubungi</a></li>
+                                </ul>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex align-items-start mb-3">
+                                <img src="asset/NaviKarir.png" alt="BPJS Kesehatan" class="company-logo me-3">
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1">BPJS Kesehatan</h6>
+                                    <div class="industry-badge mb-2">Layanan Publik</div>
+                                    <p class="text-muted small mb-0">Jakarta • 8000+ karyawan</p>
+                                    <p class="text-muted small">Sejak 2014</p>
+                                </div>
+                                </div>
+
+                                <div class="mb-3">
+                                <div class="fw-semibold small mb-1">📌 Lowongan: Intern Data Science</div>
+                                <p class="text-muted small mb-2">Kesempatan magang di bidang analisis data untuk mendukung kebijakan kesehatan nasional.</p>
+                                </div>
+
+                                <div class="mb-3">
+                                <div class="small text-muted mb-1">Keterampilan yang Dibutuhkan:</div>
+                                <div>
+                                    <span class="skill-tag">Python</span>
+                                    <span class="skill-tag">Data Cleaning</span>
+                                    <span class="skill-tag">Visualization</span>
+                                </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted"><i class="fas fa-clock me-1"></i>Diposting 3 minggu lalu</small>
+                                <div>
+                                    <button class="btn btn-outline-primary btn-sm me-2"><i class="fas fa-eye"></i></button>
+                                    <button class="btn btn-primary btn-sm"><i class="fas fa-paper-plane me-1"></i>Lamar</button>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                      <!-- Company Card 8 -->
+                    <div class="col-lg-6 col-xl-4">
+                        <div class="card company-card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span class="match-score match-good">Urgently Hiring</span>
+                            <div class="dropdown">
+                            <button class="btn btn-sm" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="./profil-perusahaan.html"><i class="fas fa-eye me-2"></i>Lihat Profil</a></li>
+                                <li><a class="dropdown-item" href="./hubungi.html"><i class="fas fa-comment me-2"></i>Hubungi</a></li>
+                            </ul>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex align-items-start mb-3">
+                            <img src="./asset/NaviKarir.png" alt="Gojek" class="company-logo me-3">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1">Gojek Indonesia</h6>
+                                <div class="industry-badge mb-2">Teknologi Transportasi</div>
+                                <p class="text-muted small mb-0">Jakarta • 15000+ karyawan</p>
+                                <p class="text-muted small">Sejak 2010</p>
+                            </div>
+                            </div>
+
+                            <div class="mb-3">
+                            <div class="fw-semibold small mb-1">📌 Lowongan: Backend Engineer</div>
+                            <p class="text-muted small mb-2">Membangun layanan backend yang scalable untuk aplikasi super Gojek.</p>
+                            </div>
+
+                            <div class="mb-3">
+                            <div class="small text-muted mb-1">Keterampilan yang Dibutuhkan:</div>
+                            <div>
+                                <span class="skill-tag">Golang</span>
+                                <span class="skill-tag">Microservices</span>
+                                <span class="skill-tag">AWS</span>
+                            </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted"><i class="fas fa-clock me-1"></i>Diposting 2 hari lalu</small>
+                            <div>
+                                <button class="btn btn-outline-primary btn-sm me-2"><i class="fas fa-eye"></i></button>
+                                <button class="btn btn-primary btn-sm"><i class="fas fa-paper-plane me-1"></i>Lamar</button>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+                    <!-- Company Card 9 -->
+                    <div class="col-lg-6 col-xl-4">
+                        <div class="card company-card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span class="match-score match-fair">Remote Work</span>
+                            <div class="dropdown">
+                            <button class="btn btn-sm" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="./profil-perusahaan.html"><i class="fas fa-eye me-2"></i>Lihat Profil</a></li>
+                                <li><a class="dropdown-item" href="./hubungi.html"><i class="fas fa-comment me-2"></i>Hubungi</a></li>
+                            </ul>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex align-items-start mb-3">
+                            <img src="./asset/NaviKarir.png" alt="Traveloka" class="company-logo me-3">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1">Traveloka</h6>
+                                <div class="industry-badge mb-2">Online Travel</div>
+                                <p class="text-muted small mb-0">Jakarta • 7000+ karyawan</p>
+                                <p class="text-muted small">Sejak 2012</p>
+                            </div>
+                            </div>
+
+                            <div class="mb-3">
+                            <div class="fw-semibold small mb-1">📌 Lowongan: Product Manager</div>
+                            <p class="text-muted small mb-2">Mengelola pengembangan produk travel dan lifestyle dengan tim remote.</p>
+                            </div>
+
+                            <div class="mb-3">
+                            <div class="small text-muted mb-1">Keterampilan yang Dibutuhkan:</div>
+                            <div>
+                                <span class="skill-tag">Agile</span>
+                                <span class="skill-tag">Roadmap Planning</span>
+                                <span class="skill-tag">Leadership</span>
+                            </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted"><i class="fas fa-clock me-1"></i>Diposting 4 hari lalu</small>
+                            <div>
+                                <button class="btn btn-outline-primary btn-sm me-2"><i class="fas fa-eye"></i></button>
+                                <button class="btn btn-primary btn-sm"><i class="fas fa-paper-plane me-1"></i>Lamar</button>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    <!-- Load More -->
+                    <div class="text-center mt-4">
+                        <button class="btn btn-outline-primary">
+                            <i class="fas fa-chevron-down me-2"></i>Muat Lebih Banyak Lowongan
+                        </button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile sidebar toggle
+            const sidebarToggle = document.querySelector('.navbar-toggler');
+            const sidebar = document.querySelector('.sidebar');
+            
+            if (sidebarToggle && sidebar) {
+                sidebarToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('show');
+                });
+                
+                document.addEventListener('click', function(e) {
+                    if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+                        sidebar.classList.remove('show');
+                    }
+                });
+            }
+
+            // Filter functionality
+            const filters = ['universityFilter', 'majorFilter', 'graduationYear', 'locationFilter'];
+            filters.forEach(filterId => {
+                const filter = document.getElementById(filterId);
+                if (filter) {
+                    filter.addEventListener('change', function() {
+                        console.log(filterId + ' changed to:', this.value);
+                        // Add actual filtering logic here
+                        filterCandidates();
+                    });
+                }
+            });
+
+            // Search functionality
+            const searchInput = document.querySelector('.search-input');
+            if (searchInput) {
+                searchInput.addEventListener('input', debounce(function() {
+                    console.log('Searching for:', this.value);
+                    // Add actual search logic here
+                    searchCandidates(this.value);
+                }, 300));
+            }
+        });
+
+        function filterCandidates() {
+            // Implementation for filtering candidates
+            console.log('Filtering candidates...');
+        }
+
+        function searchCandidates(query) {
+            // Implementation for searching candidates
+            console.log('Searching candidates for:', query);
+        }
+
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+    </script>
+</body>
+</html>
