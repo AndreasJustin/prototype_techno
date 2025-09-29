@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buat Lowongan - NaviKarir</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #64748b;
+            --accent-color: #f59e0b;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --light-bg: #f8fafc;
+            --dark-text: #1e293b;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--dark-text);
+            background-color: var(--light-bg);
+        }
+
+        /* Common styles */
+        .main-header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-color) !important;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: var(--secondary-color) !important;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary-color) !important;
+        }
+
+        .sidebar {
+            background: white;
+            min-height: calc(100vh - 76px);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            padding: 0;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 1rem 0;
+        }
+
+        .sidebar-menu li {
+            margin: 0;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background-color: var(--light-bg);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+        }
+
+        .sidebar-menu i {
+            width: 20px;
+            margin-right: 12px;
+            font-size: 1.1rem;
+        }
+
+        .main-content {
+            background: white;
+            min-height: calc(100vh - 76px);
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--dark-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+        }
+
+        .card {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+
+        .card-header {
+            background-color: var(--light-bg);
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+        }
+
+        /* Form Styles */
+        .form-label {
+            font-weight: 500;
+            color: var(--dark-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control, .form-select {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
+        }
+
+        .form-text {
+            font-size: 0.875rem;
+            color: var(--secondary-color);
+        }
+
+        /* Rich Text Editor Placeholder */
+        .rich-editor {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            min-height: 200px;
+            padding: 1rem;
+            background-color: #fafafa;
+            position: relative;
+        }
+
+        .rich-editor::before {
+            content: "Rich text editor akan tersedia di sini untuk formatting deskripsi pekerjaan...";
+            color: var(--secondary-color);
+            font-style: italic;
+        }
+
+        /* Skills Tags */
+        .skills-input-container {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.5rem;
+            min-height: 3rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            align-items: flex-start;
+        }
+
+        .skill-tag {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .skill-tag .remove {
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .skill-input {
+            border: none;
+            outline: none;
+            flex: 1;
+            min-width: 120px;
+            padding: 0.25rem;
+        }
+
+        /* Template Selection */
+        .template-card {
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .template-card:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(37, 99, 235, 0.05);
+        }
+
+        .template-card.selected {
+            border-color: var(--primary-color);
+            background-color: rgba(37, 99, 235, 0.1);
+        }
+
+        /* Button Styles */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), #1d4ed8);
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+        }
+
+        .btn-outline-primary {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success-color), #059669);
+            border: none;
+        }
+
+        /* Progress Steps */
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .progress-steps::before {
+            content: '';
+            position: absolute;
+            top: 1.5rem;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: var(--border-color);
+            z-index: 1;
+        }
+
+        .progress-line {
+            position: absolute;
+            top: 1.5rem;
+            left: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            z-index: 2;
+            transition: width 0.3s ease;
+        }
+
+        .step {
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            z-index: 3;
+            position: relative;
+        }
+
+        .step.active {
+            border-color: var(--primary-color);
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .step.completed {
+            border-color: var(--success-color);
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -100%;
+                top: 76px;
+                width: 280px;
+                height: calc(100vh - 76px);
+                transition: left 0.3s ease;
+                z-index: 999;
+            }
+
+            .sidebar.show {
+                left: 0;
+            }
+
+            .main-content {
+                margin: 1rem 0.5rem;
+                padding: 1.5rem;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .progress-steps {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .progress-steps::before,
+            .progress-line {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container-fluid">
+                <!-- Brand -->
+                <a class="navbar-brand" href="../index.html">
+                    <i class="fas fa-briefcase me-2"></i>NaviKarir
+                </a>
+
+                <!-- Mobile Toggle -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Navigation -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="./dashboard.html">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="./manajemen-lowongan.html">Lowongan</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./pencarian-talenta.html">Pencarian Talenta</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./manajemen-pelamar.html">Pelamar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./pesan.html">Pesan</a>
+                        </li>
+                    </ul>
+
+                    <!-- User Menu -->
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user-circle me-1"></i>
+                                <span>PT. Teknologi Maju</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="./profil-perusahaan.html"><i class="fas fa-user me-2"></i>Profil</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Pengaturan</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="./login.html"><i class="fas fa-sign-out-alt me-2"></i>Keluar</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav class="col-md-3 col-lg-2 sidebar d-md-block">
+                <ul class="sidebar-menu">
+                    <li>
+                        <a href="./dashboard.html">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./manajemen-lowongan.html">
+                            <i class="fas fa-briefcase"></i>
+                            <span>Manajemen Lowongan</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="active">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Buat Lowongan</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./pencarian-talenta.html">
+                            <i class="fas fa-search"></i>
+                            <span>Pencarian Talenta</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./manajemen-pelamar.html">
+                            <i class="fas fa-users"></i>
+                            <span>Manajemen Pelamar</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./profil-kandidat.html">
+                            <i class="fas fa-user-graduate"></i>
+                            <span>Profil Kandidat</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./pesan.html">
+                            <i class="fas fa-comments"></i>
+                            <span>Pesan Langsung</span>
+                        </a>
+                    </li>
+                    <li>
+                        <hr style="margin: 1rem 1.5rem; border-color: var(--border-color);">
+                    </li>
+                    <li>
+                        <a href="./profil-perusahaan.html">
+                            <i class="fas fa-building"></i>
+                            <span>Profil Perusahaan</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-cog"></i>
+                            <span>Pengaturan</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="col-md-9 col-lg-10 ms-sm-auto">
+                <div class="main-content">
+                    <!-- Page Header -->
+                    <div class="page-header">
+                        <h1 class="page-title">Buat Lowongan Baru</h1>
+                        <p class="page-subtitle">Buat lowongan pekerjaan atau magang yang menarik untuk kandidat terbaik</p>
+                    </div>
+
+                    <!-- Breadcrumb -->
+                    <nav aria-label="breadcrumb" class="mb-4">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="./dashboard.html">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="./manajemen-lowongan.html">Manajemen Lowongan</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Buat Lowongan</li>
+                        </ol>
+                    </nav>
+
+                    <!-- Progress Steps -->
+                    <div class="progress-steps">
+                        <div class="progress-line" id="progressLine" style="width: 33%;"></div>
+                        <div class="step active" data-step="1">1</div>
+                        <div class="step" data-step="2">2</div>
+                        <div class="step" data-step="3">3</div>
+                        <div class="step" data-step="4">4</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <!-- Step 1: Basic Information -->
+                            <div id="step1" class="step-content">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="card-title mb-0">
+                                            <i class="fas fa-info-circle me-2"></i>
+                                            Informasi Dasar
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-8 mb-3">
+                                                <label for="jobTitle" class="form-label">Judul Posisi *</label>
+                                                <input type="text" class="form-control" id="jobTitle" placeholder="contoh: Frontend Developer, UI/UX Designer Intern">
+                                                <div class="form-text">Gunakan judul yang jelas dan mudah dicari</div>
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label for="jobType" class="form-label">Tipe Pekerjaan *</label>
+                                                <select class="form-select" id="jobType">
+                                                    <option value="">Pilih Tipe</option>
+                                                    <option value="fulltime">Full-time</option>
+                                                    <option value="parttime">Part-time</option>
+                                                    <option value="internship">Magang</option>
+                                                    <option value="freelance">Freelance</option>
+                                                    <option value="contract">Kontrak</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="department" class="form-label">Departemen/Divisi</label>
+                                                <select class="form-select" id="department">
+                                                    <option value="">Pilih Departemen</option>
+                                                    <option value="engineering">Engineering/IT</option>
+                                                    <option value="design">Design</option>
+                                                    <option value="marketing">Marketing</option>
+                                                    <option value="sales">Sales</option>
+                                                    <option value="hr">Human Resources</option>
+                                                    <option value="finance">Finance</option>
+                                                    <option value="operations">Operations</option>
+                                                    <option value="other">Lainnya</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="experienceLevel" class="form-label">Level Experience *</label>
+                                                <select class="form-select" id="experienceLevel">
+                                                    <option value="">Pilih Level</option>
+                                                    <option value="entry">Entry Level (0-2 tahun)</option>
+                                                    <option value="junior">Junior (1-3 tahun)</option>
+                                                    <option value="mid">Mid Level (3-5 tahun)</option>
+                                                    <option value="senior">Senior (5+ tahun)</option>
+                                                    <option value="lead">Lead/Manager</option>
+                                                    <option value="intern">Intern/Fresh Graduate</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="location" class="form-label">Lokasi Kerja *</label>
+                                                <input type="text" class="form-control" id="location" placeholder="Jakarta Selatan, DKI Jakarta">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="workModel" class="form-label">Model Kerja</label>
+                                                <select class="form-select" id="workModel">
+                                                    <option value="onsite">On-site</option>
+                                                    <option value="remote">Remote</option>
+                                                    <option value="hybrid">Hybrid</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="salaryMin" class="form-label">Gaji Minimum (Opsional)</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">Rp</span>
+                                                    <input type="number" class="form-control" id="salaryMin" placeholder="5000000">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="salaryMax" class="form-label">Gaji Maksimum (Opsional)</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">Rp</span>
+                                                    <input type="number" class="form-control" id="salaryMax" placeholder="8000000">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Step 2: Job Description -->
+                            <div id="step2" class="step-content" style="display: none;">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="card-title mb-0">
+                                            <i class="fas fa-align-left me-2"></i>
+                                            Deskripsi Pekerjaan
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-4">
+                                            <label for="jobSummary" class="form-label">Ringkasan Pekerjaan *</label>
+                                            <textarea class="form-control" id="jobSummary" rows="3" placeholder="Tuliskan ringkasan singkat tentang posisi ini dan apa yang akan dikerjakan kandidat..."></textarea>
+                                            <div class="form-text">Maksimal 500 karakter</div>
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <label for="jobDescription" class="form-label">Deskripsi Detail *</label>
+                                            <div class="rich-editor" id="jobDescription"></div>
+                                            <div class="form-text">Jelaskan secara detail tentang tanggung jawab, tugas harian, dan ekspektasi untuk posisi ini</div>
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <label for="requirements" class="form-label">Kualifikasi & Persyaratan *</label>
+                                            <div class="rich-editor" id="requirements"></div>
+                                            <div class="form-text">Tuliskan kualifikasi minimum, skill yang dibutuhkan, dan persyaratan lainnya</div>
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <label class="form-label">Skills yang Dibutuhkan *</label>
+                                            <div class="skills-input-container" id="skillsContainer">
+                                                <input type="text" class="skill-input" id="skillInput" placeholder="Ketik skill dan tekan Enter...">
+                                            </div>
+                                            <div class="form-text">Tambahkan skill yang relevan seperti JavaScript, React, Figma, dll.</div>
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <label for="benefits" class="form-label">Benefits & Fasilitas</label>
+                                            <div class="rich-editor" id="benefits"></div>
+                                            <div class="form-text">Jelaskan benefit, fasilitas, dan keuntungan bekerja di perusahaan</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Step 3: Application Settings -->
+                            <div id="step3" class="step-content" style="display: none;">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="card-title mb-0">
+                                            <i class="fas fa-cogs me-2"></i>
+                                            Pengaturan Aplikasi
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="applicationDeadline" class="form-label">Batas Waktu Aplikasi *</label>
+                                                <input type="date" class="form-control" id="applicationDeadline">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="maxApplicants" class="form-label">Maksimal Pelamar</label>
+                                                <input type="number" class="form-control" id="maxApplicants" placeholder="100" min="1">
+                                                <div class="form-text">Kosongkan jika tidak ada batas</div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="applicationMethod" class="form-label">Metode Aplikasi *</label>
+                                                <select class="form-select" id="applicationMethod">
+                                                    <option value="platform">Melalui Platform NaviKarir</option>
+                                                    <option value="email">Via Email</option>
+                                                    <option value="external">Link External</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="contactEmail" class="form-label">Email Kontak</label>
+                                                <input type="email" class="form-control" id="contactEmail" placeholder="hr@teknologimaju.com">
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <label class="form-label">Dokumen yang Dibutuhkan</label>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input" type="checkbox" value="" id="reqCV" checked>
+                                                        <label class="form-check-label" for="reqCV">
+                                                            CV/Resume
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input" type="checkbox" value="" id="reqCoverLetter">
+                                                        <label class="form-check-label" for="reqCoverLetter">
+                                                            Cover Letter
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input" type="checkbox" value="" id="reqPortfolio">
+                                                        <label class="form-check-label" for="reqPortfolio">
+                                                            Portfolio
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input" type="checkbox" value="" id="reqTranscript">
+                                                        <label class="form-check-label" for="reqTranscript">
+                                                            Transkrip Nilai
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input" type="checkbox" value="" id="reqCertificates">
+                                                        <label class="form-check-label" for="reqCertificates">
+                                                            Sertifikat
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input" type="checkbox" value="" id="reqOther">
+                                                        <label class="form-check-label" for="reqOther">
+                                                            Dokumen Lainnya
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="applicationQuestions" class="form-label">Pertanyaan Tambahan</label>
+                                            <textarea class="form-control" id="applicationQuestions" rows="3" placeholder="Tambahkan pertanyaan khusus yang ingin Anda ajukan kepada pelamar..."></textarea>
+                                            <div class="form-text">Opsional: Pertanyaan yang akan dijawab pelamar saat melamar</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Step 4: Review & Publish -->
+                            <div id="step4" class="step-content" style="display: none;">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="card-title mb-0">
+                                            <i class="fas fa-eye me-2"></i>
+                                            Review & Publikasi
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="alert alert-info">
+                                            <i class="fas fa-info-circle me-2"></i>
+                                            Silakan review informasi lowongan sebelum dipublikasikan. Anda masih bisa mengedit setelah publikasi.
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="publishStatus" class="form-label">Status Publikasi</label>
+                                                <select class="form-select" id="publishStatus">
+                                                    <option value="draft">Simpan sebagai Draft</option>
+                                                    <option value="published">Publikasikan Sekarang</option>
+                                                    <option value="scheduled">Jadwalkan Publikasi</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 mb-3" id="scheduleDate" style="display: none;">
+                                                <label for="publishDate" class="form-label">Tanggal Publikasi</label>
+                                                <input type="datetime-local" class="form-control" id="publishDate">
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="" id="enableAI">
+                                                <label class="form-check-label" for="enableAI">
+                                                    <strong>Aktifkan AI Matching</strong>
+                                                </label>
+                                            </div>
+                                            <div class="form-text">AI akan secara otomatis merekomendasikan kandidat yang sesuai dengan lowongan ini</div>
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="" id="notifyNetwork">
+                                                <label class="form-check-label" for="notifyNetwork">
+                                                    <strong>Notifikasi ke Network</strong>
+                                                </label>
+                                            </div>
+                                            <div class="form-text">Kirim notifikasi lowongan ke mahasiswa yang mengikuti perusahaan Anda</div>
+                                        </div>
+
+                                        <!-- Job Preview -->
+                                        <div class="border rounded p-3 bg-light">
+                                            <h6 class="text-primary">Preview Lowongan:</h6>
+                                            <div id="jobPreview">
+                                                <h5 class="mb-1" id="previewTitle">-</h5>
+                                                <p class="text-muted mb-2">
+                                                    <i class="fas fa-building me-1"></i>PT. Teknologi Maju
+                                                    <span class="mx-2">•</span>
+                                                    <i class="fas fa-map-marker-alt me-1"></i><span id="previewLocation">-</span>
+                                                    <span class="mx-2">•</span>
+                                                    <span id="previewType">-</span>
+                                                </p>
+                                                <p class="mb-0" id="previewSummary">Deskripsi pekerjaan akan muncul di sini...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Navigation Buttons -->
+                            <div class="d-flex justify-content-between mt-4">
+                                <button type="button" class="btn btn-outline-secondary" id="prevBtn" disabled>
+                                    <i class="fas fa-chevron-left me-2"></i>Sebelumnya
+                                </button>
+                                <div>
+                                    <button type="button" class="btn btn-outline-primary me-2" id="saveDraftBtn">
+                                        <i class="fas fa-save me-2"></i>Simpan Draft
+                                    </button>
+                                    <button type="button" class="btn btn-primary" id="nextBtn">
+                                        Selanjutnya<i class="fas fa-chevron-right ms-2"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sidebar: Templates & Tips -->
+                        <div class="col-lg-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-lightbulb me-2"></i>
+                                        Tips & Template
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-4">
+                                        <h6 class="text-primary">📝 Tips Menulis Lowongan</h6>
+                                        <ul class="list-unstyled">
+                                            <li class="mb-2">
+                                                <small><i class="fas fa-check text-success me-1"></i> Gunakan judul yang jelas dan spesifik</small>
+                                            </li>
+                                            <li class="mb-2">
+                                                <small><i class="fas fa-check text-success me-1"></i> Jelaskan tanggung jawab dengan detail</small>
+                                            </li>
+                                            <li class="mb-2">
+                                                <small><i class="fas fa-check text-success me-1"></i> Cantumkan skills yang benar-benar dibutuhkan</small>
+                                            </li>
+                                            <li class="mb-2">
+                                                <small><i class="fas fa-check text-success me-1"></i> Sebutkan benefit yang menarik</small>
+                                            </li>
+                                            <li class="mb-2">
+                                                <small><i class="fas fa-check text-success me-1"></i> Gunakan bahasa yang ramah mahasiswa</small>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <h6 class="text-primary">🎯 Template Cepat</h6>
+                                        <div class="template-card mb-2" data-template="frontend">
+                                            <strong>Frontend Developer</strong>
+                                            <p class="mb-0 small text-muted">Template untuk posisi frontend development</p>
+                                        </div>
+                                        <div class="template-card mb-2" data-template="intern">
+                                            <strong>Program Magang</strong>
+                                            <p class="mb-0 small text-muted">Template khusus untuk posisi magang</p>
+                                        </div>
+                                        <div class="template-card" data-template="general">
+                                            <strong>Posisi Umum</strong>
+                                            <p class="mb-0 small text-muted">Template dasar untuk berbagai posisi</p>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <h6 class="text-primary">🤖 AI Assistant</h6>
+                                        <p class="small text-muted mb-2">AI dapat membantu:</p>
+                                        <ul class="list-unstyled">
+                                            <li class="mb-1">
+                                                <small><i class="fas fa-robot text-primary me-1"></i> Mengoptimalkan deskripsi</small>
+                                            </li>
+                                            <li class="mb-1">
+                                                <small><i class="fas fa-robot text-primary me-1"></i> Merekomendasikan skills</small>
+                                            </li>
+                                            <li class="mb-1">
+                                                <small><i class="fas fa-robot text-primary me-1"></i> Menyarankan kandidat</small>
+                                            </li>
+                                        </ul>
+                                        <button class="btn btn-outline-primary btn-sm w-100 mt-2">
+                                            <i class="fas fa-magic me-1"></i> Gunakan AI Helper
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile sidebar toggle
+            const sidebarToggle = document.querySelector('.navbar-toggler');
+            const sidebar = document.querySelector('.sidebar');
+            
+            if (sidebarToggle && sidebar) {
+                sidebarToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('show');
+                });
+                
+                document.addEventListener('click', function(e) {
+                    if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+                        sidebar.classList.remove('show');
+                    }
+                });
+            }
+
+            // Step navigation
+            const nextBtn = document.getElementById('nextBtn');
+            const prevBtn = document.getElementById('prevBtn');
+            
+            nextBtn.addEventListener('click', function() {
+                if (currentStep < totalSteps) {
+                    if (currentStep === totalSteps - 1) {
+                        nextBtn.innerHTML = '<i class="fas fa-rocket me-2"></i>Publikasikan';
+                        nextBtn.classList.remove('btn-primary');
+                        nextBtn.classList.add('btn-success');
+                    } else if (currentStep === totalSteps) {
+                        // Handle publish
+                        alert('Lowongan berhasil dipublikasikan!');
+                        return;
+                    }
+                    
+                    nextStep();
+                }
+            });
+            
+            prevBtn.addEventListener('click', function() {
+                if (currentStep > 1) {
+                    prevStep();
+                    if (currentStep < totalSteps) {
+                        nextBtn.innerHTML = 'Selanjutnya<i class="fas fa-chevron-right ms-2"></i>';
+                        nextBtn.classList.remove('btn-success');
+                        nextBtn.classList.add('btn-primary');
+                    }
+                }
+            });
+
+            // Skills input
+            const skillInput = document.getElementById('skillInput');
+            const skillsContainer = document.getElementById('skillsContainer');
+            
+            skillInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && this.value.trim()) {
+                    e.preventDefault();
+                    addSkill(this.value.trim());
+                    this.value = '';
+                }
+            });
+
+            // Template selection
+            document.querySelectorAll('.template-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    document.querySelectorAll('.template-card').forEach(c => c.classList.remove('selected'));
+                    this.classList.add('selected');
+                    
+                    const template = this.dataset.template;
+                    loadTemplate(template);
+                });
+            });
+
+            // Publish status change
+            document.getElementById('publishStatus').addEventListener('change', function() {
+                const scheduleDate = document.getElementById('scheduleDate');
+                if (this.value === 'scheduled') {
+                    scheduleDate.style.display = 'block';
+                } else {
+                    scheduleDate.style.display = 'none';
+                }
+            });
+
+            // Real-time preview update
+            ['jobTitle', 'location', 'jobType', 'jobSummary'].forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener('input', updatePreview);
+                }
+            });
+        });
+
+        function nextStep() {
+            document.getElementById(`step${currentStep}`).style.display = 'none';
+            currentStep++;
+            document.getElementById(`step${currentStep}`).style.display = 'block';
+            
+            updateStepIndicators();
+            updateButtons();
+        }
+
+        function prevStep() {
+            document.getElementById(`step${currentStep}`).style.display = 'none';
+            currentStep--;
+            document.getElementById(`step${currentStep}`).style.display = 'block';
+            
+            updateStepIndicators();
+            updateButtons();
+        }
+
+        function updateStepIndicators() {
+            document.querySelectorAll('.step').forEach((step, index) => {
+                const stepNumber = index + 1;
+                if (stepNumber < currentStep) {
+                    step.classList.add('completed');
+                    step.classList.remove('active');
+                    step.innerHTML = '<i class="fas fa-check"></i>';
+                } else if (stepNumber === currentStep) {
+                    step.classList.add('active');
+                    step.classList.remove('completed');
+                    step.innerHTML = stepNumber;
+                } else {
+                    step.classList.remove('active', 'completed');
+                    step.innerHTML = stepNumber;
+                }
+            });
+            
+            // Update progress line
+            const progressLine = document.getElementById('progressLine');
+            const progressWidth = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            progressLine.style.width = progressWidth + '%';
+        }
+
+        function updateButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            prevBtn.disabled = currentStep === 1;
+            
+            if (currentStep === totalSteps) {
+                nextBtn.innerHTML = '<i class="fas fa-rocket me-2"></i>Publikasikan';
+                nextBtn.classList.remove('btn-primary');
+                nextBtn.classList.add('btn-success');
+            }
+        }
+
+        function addSkill(skill) {
+            const skillsContainer = document.getElementById('skillsContainer');
+            const skillInput = document.getElementById('skillInput');
+            
+            const skillTag = document.createElement('div');
+            skillTag.className = 'skill-tag';
+            skillTag.innerHTML = `
+                ${skill}
+                <span class="remove" onclick="this.parentElement.remove()">&times;</span>
+            `;
+            
+            skillsContainer.insertBefore(skillTag, skillInput);
+        }
+
+        function loadTemplate(templateType) {
+            const templates = {
+                frontend: {
+                    title: 'Frontend Developer',
+                    summary: 'Bergabunglah dengan tim development kami untuk membangun user interface yang menarik dan responsif menggunakan teknologi modern.',
+                    skills: ['JavaScript', 'React', 'HTML/CSS', 'Git', 'Responsive Design']
+                },
+                intern: {
+                    title: 'Magang Program Development',
+                    summary: 'Program magang 3-6 bulan untuk mahasiswa yang ingin mengembangkan skill praktis dalam dunia kerja teknologi.',
+                    skills: ['Eager to Learn', 'Basic Programming', 'Communication', 'Teamwork']
+                },
+                general: {
+                    title: 'Posisi Entry Level',
+                    summary: 'Kesempatan karir untuk fresh graduate yang ingin memulai perjalanan profesional di perusahaan teknologi.',
+                    skills: ['Problem Solving', 'Communication', 'Adaptability', 'Learning Agility']
+                }
+            };
+            
+            const template = templates[templateType];
+            if (template) {
+                document.getElementById('jobTitle').value = template.title;
+                document.getElementById('jobSummary').value = template.summary;
+                
+                // Clear existing skills and add template skills
+                const skillsContainer = document.getElementById('skillsContainer');
+                const skillTags = skillsContainer.querySelectorAll('.skill-tag');
+                skillTags.forEach(tag => tag.remove());
+                
+                template.skills.forEach(skill => addSkill(skill));
+                
+                updatePreview();
+            }
+        }
+
+        function updatePreview() {
+            const title = document.getElementById('jobTitle').value || '-';
+            const location = document.getElementById('location').value || '-';
+            const type = document.getElementById('jobType').options[document.getElementById('jobType').selectedIndex].text || '-';
+            const summary = document.getElementById('jobSummary').value || 'Deskripsi pekerjaan akan muncul di sini...';
+            
+            document.getElementById('previewTitle').textContent = title;
+            document.getElementById('previewLocation').textContent = location;
+            document.getElementById('previewType').textContent = type;
+            document.getElementById('previewSummary').textContent = summary;
+        }
+    </script>
+</body>
+</html>

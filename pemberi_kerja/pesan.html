@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesan Langsung - NaviKarir</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #64748b;
+            --accent-color: #f59e0b;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --light-bg: #f8fafc;
+            --dark-text: #1e293b;
+            --border-color: #e2e8f0;
+            --ai-color: #8b5cf6;
+            --chat-bg: #f1f5f9;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--dark-text);
+            background-color: var(--light-bg);
+            overflow-x: hidden;
+        }
+
+        /* Header & Navigation */
+        .main-header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-color) !important;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: var(--secondary-color) !important;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary-color) !important;
+        }
+
+        .sidebar {
+            background: white;
+            min-height: calc(100vh - 76px);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            padding: 0;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 1rem 0;
+        }
+
+        .sidebar-menu li {
+            margin: 0;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background-color: var(--light-bg);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+        }
+
+        .sidebar-menu i {
+            width: 20px;
+            margin-right: 12px;
+            font-size: 1.1rem;
+        }
+
+        /* Chat Layout */
+        .chat-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin: 1rem 0;
+            height: calc(100vh - 120px);
+            display: flex;
+            overflow: hidden;
+        }
+
+        .chat-sidebar {
+            width: 350px;
+            border-right: 1px solid var(--border-color);
+            background: var(--light-bg);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: white;
+        }
+
+        /* Chat Sidebar */
+        .chat-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            background: white;
+        }
+
+        .chat-search {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .chat-search input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 25px;
+            font-size: 0.875rem;
+        }
+
+        .chat-search i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-color);
+        }
+
+        .chat-filters {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            background: white;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .chat-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0;
+        }
+
+        .chat-item {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            position: relative;
+        }
+
+        .chat-item:hover {
+            background-color: rgba(37, 99, 235, 0.05);
+        }
+
+        .chat-item.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .chat-item.active .chat-time,
+        .chat-item.active .chat-preview {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .chat-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .chat-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .chat-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .chat-preview {
+            font-size: 0.875rem;
+            color: var(--secondary-color);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chat-time {
+            font-size: 0.75rem;
+            color: var(--secondary-color);
+        }
+
+        .unread-badge {
+            background: var(--primary-color);
+            color: white;
+            border-radius: 10px;
+            padding: 0.125rem 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .online-indicator {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 12px;
+            height: 12px;
+            background: var(--success-color);
+            border: 2px solid white;
+            border-radius: 50%;
+        }
+
+        /* Chat Main Area */
+        .chat-main-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            background: white;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            background: var(--chat-bg);
+        }
+
+        .message {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .message.sent {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            margin: 0 0.5rem;
+        }
+
+        .message-content {
+            max-width: 70%;
+            background: white;
+            padding: 0.75rem 1rem;
+            border-radius: 18px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .message.sent .message-content {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .message-text {
+            margin-bottom: 0.25rem;
+        }
+
+        .message-time {
+            font-size: 0.75rem;
+            color: var(--secondary-color);
+        }
+
+        .message.sent .message-time {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .message-input-area {
+            padding: 1rem;
+            border-top: 1px solid var(--border-color);
+            background: white;
+        }
+
+        .message-input {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 25px;
+            background: var(--light-bg);
+        }
+
+        .message-input input {
+            flex: 1;
+            border: none;
+            background: none;
+            outline: none;
+            font-size: 0.875rem;
+        }
+
+        .message-input button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .message-input button:hover {
+            background: #1d4ed8;
+        }
+
+        .message-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--secondary-color);
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 4px;
+            transition: color 0.3s ease;
+        }
+
+        .action-btn:hover {
+            color: var(--primary-color);
+        }
+
+        /* Empty State */
+        .empty-chat {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--secondary-color);
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .empty-chat i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: var(--border-color);
+        }
+
+        /* Status Indicators */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            color: var(--secondary-color);
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 0.25rem;
+            margin-left: 0.5rem;
+        }
+
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--secondary-color);
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        .typing-dot:nth-child(3) { animation-delay: 0s; }
+
+        @keyframes typing {
+            0%, 80%, 100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .chat-sidebar {
+                width: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -100%;
+                top: 76px;
+                width: 280px;
+                height: calc(100vh - 76px);
+                transition: left 0.3s ease;
+                z-index: 999;
+            }
+
+            .sidebar.show {
+                left: 0;
+            }
+
+            .chat-container {
+                height: calc(100vh - 100px);
+                margin: 0.5rem;
+            }
+
+            .chat-sidebar {
+                position: absolute;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                z-index: 1000;
+                transition: left 0.3s ease;
+            }
+
+            .chat-sidebar.show {
+                left: 0;
+            }
+
+            .mobile-chat-toggle {
+                display: block !important;
+            }
+
+            .message-content {
+                max-width: 85%;
+            }
+        }
+
+        .mobile-chat-toggle {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="../index.html">
+                    <i class="fas fa-briefcase me-2"></i>NaviKarir
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="./dashboard.html">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./manajemen-lowongan.html">Lowongan</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./pencarian-talenta.html">Pencarian Talenta</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./manajemen-pelamar.html">Pelamar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">Pesan</a>
+                        </li>
+                    </ul>
+
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user-circle me-1"></i>
+                                <span>PT. Teknologi Maju</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="./profil-perusahaan.html"><i class="fas fa-user me-2"></i>Profil</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Pengaturan</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="./login.html"><i class="fas fa-sign-out-alt me-2"></i>Keluar</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav class="col-md-3 col-lg-2 sidebar d-md-block">
+                <ul class="sidebar-menu">
+                    <li>
+                        <a href="./dashboard.html">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./manajemen-lowongan.html">
+                            <i class="fas fa-briefcase"></i>
+                            <span>Manajemen Lowongan</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./buat-lowongan.html">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Buat Lowongan</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./pencarian-talenta.html">
+                            <i class="fas fa-search"></i>
+                            <span>Pencarian Talenta</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./manajemen-pelamar.html">
+                            <i class="fas fa-users"></i>
+                            <span>Manajemen Pelamar</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./profil-kandidat.html">
+                            <i class="fas fa-user-graduate"></i>
+                            <span>Profil Kandidat</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="active">
+                            <i class="fas fa-comments"></i>
+                            <span>Pesan Langsung</span>
+                        </a>
+                    </li>
+                    <li>
+                        <hr style="margin: 1rem 1.5rem; border-color: var(--border-color);">
+                    </li>
+                    <li>
+                        <a href="./profil-perusahaan.html">
+                            <i class="fas fa-building"></i>
+                            <span>Profil Perusahaan</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-cog"></i>
+                            <span>Pengaturan</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="col-md-9 col-lg-10 ms-sm-auto">
+                <!-- Chat Container -->
+                <div class="chat-container">
+                    <!-- Chat Sidebar -->
+                    <div class="chat-sidebar" id="chatSidebar">
+                        <!-- Chat Header -->
+                        <div class="chat-header">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="mb-0">Pesan</h5>
+                                <button class="btn btn-primary btn-sm">
+                                    <i class="fas fa-plus me-1"></i>Pesan Baru
+                                </button>
+                            </div>
+                            
+                            <!-- Search -->
+                            <div class="chat-search">
+                                <input type="text" placeholder="Cari pesan atau kandidat...">
+                                <i class="fas fa-search"></i>
+                            </div>
+
+                            <!-- Filters -->
+                            <div class="chat-filters">
+                                <button class="filter-btn active" data-filter="all">Semua</button>
+                                <button class="filter-btn" data-filter="unread">Belum Dibaca</button>
+                                <button class="filter-btn" data-filter="archived">Arsip</button>
+                            </div>
+                        </div>
+
+                        <!-- Chat List -->
+                        <div class="chat-list">
+                            <!-- Chat Item 1 -->
+                            <div class="chat-item active" data-chat="rahma">
+                                <div class="d-flex align-items-center">
+                                    <div class="position-relative me-3">
+                                        <img src="https://via.placeholder.com/45x45/667eea/ffffff?text=RS" alt="Rahma Sari" class="chat-avatar">
+                                        <div class="online-indicator"></div>
+                                    </div>
+                                    <div class="chat-info">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div class="chat-name">Rahma Sari</div>
+                                            <div class="chat-time">10:30</div>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="chat-preview">Terima kasih atas kesempatan interview nya...</div>
+                                            <span class="unread-badge">2</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Chat Item 2 -->
+                            <div class="chat-item" data-chat="andi">
+                                <div class="d-flex align-items-center">
+                                    <div class="position-relative me-3">
+                                        <img src="https://via.placeholder.com/45x45/10b981/ffffff?text=AP" alt="Andi Putra" class="chat-avatar">
+                                    </div>
+                                    <div class="chat-info">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div class="chat-name">Andi Putra</div>
+                                            <div class="chat-time">09:15</div>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="chat-preview">Portfolio saya sudah saya update dengan project terbaru</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Chat Item 3 -->
+                            <div class="chat-item" data-chat="siti">
+                                <div class="d-flex align-items-center">
+                                    <div class="position-relative me-3">
+                                        <img src="https://via.placeholder.com/45x45/f59e0b/ffffff?text=SN" alt="Siti Nurhaliza" class="chat-avatar">
+                                        <div class="online-indicator"></div>
+                                    </div>
+                                    <div class="chat-info">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div class="chat-name">Siti Nurhaliza</div>
+                                            <div class="chat-time">Kemarin</div>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="chat-preview">Baik, saya akan menyiapkan design mockup...</div>
+                                            <span class="unread-badge">1</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Chat Item 4 -->
+                            <div class="chat-item" data-chat="michael">
+                                <div class="d-flex align-items-center">
+                                    <div class="position-relative me-3">
+                                        <img src="https://via.placeholder.com/45x45/8b5cf6/ffffff?text=MJ" alt="Michael Johnson" class="chat-avatar">
+                                    </div>
+                                    <div class="chat-info">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div class="chat-name">Michael Johnson</div>
+                                            <div class="chat-time">2 hari</div>
+                                        </div>
+                                        <div class="chat-preview">Apakah masih ada kesempatan untuk interview susulan?</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Chat Item 5 -->
+                            <div class="chat-item" data-chat="dewi">
+                                <div class="d-flex align-items-center">
+                                    <div class="position-relative me-3">
+                                        <img src="https://via.placeholder.com/45x45/ef4444/ffffff?text=DP" alt="Dewi Pratiwi" class="chat-avatar">
+                                    </div>
+                                    <div class="chat-info">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div class="chat-name">Dewi Pratiwi</div>
+                                            <div class="chat-time">3 hari</div>
+                                        </div>
+                                        <div class="chat-preview">Terima kasih atas feedback yang diberikan</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chat Main Area -->
+                    <div class="chat-main" id="chatMain">
+                        <!-- Chat Header -->
+                        <div class="chat-main-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <button class="btn btn-outline-secondary btn-sm mobile-chat-toggle me-3" id="mobileToggle">
+                                        <i class="fas fa-arrow-left"></i>
+                                    </button>
+                                    <div class="position-relative me-3">
+                                        <img src="https://via.placeholder.com/45x45/667eea/ffffff?text=RS" alt="Rahma Sari" class="chat-avatar">
+                                        <div class="online-indicator"></div>
+                                    </div>
+                                    <div>
+                                        <div class="fw-semibold">Rahma Sari</div>
+                                        <div class="small text-success">Online</div>
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-video"></i>
+                                    </button>
+                                    <button class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-phone"></i>
+                                    </button>
+                                    <div class="dropdown">
+                                        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="./profil-kandidat.html"><i class="fas fa-user me-2"></i>Lihat Profil</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="fas fa-calendar me-2"></i>Jadwalkan Meeting</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="fas fa-file me-2"></i>Kirim File</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-archive me-2"></i>Arsipkan Chat</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chat Messages -->
+                        <div class="chat-messages" id="chatMessages">
+                            <!-- Message 1 - Received -->
+                            <div class="message">
+                                <img src="https://via.placeholder.com/32x32/667eea/ffffff?text=RS" alt="Rahma Sari" class="message-avatar">
+                                <div class="message-content">
+                                    <div class="message-text">
+                                        Selamat pagi! Saya Rahma Sari, saya tertarik dengan posisi Frontend Developer di perusahaan Anda. Apakah saya bisa mendapatkan informasi lebih detail mengenai job description dan proses seleksinya?
+                                    </div>
+                                    <div class="message-time">09:00</div>
+                                </div>
+                            </div>
+
+                            <!-- Message 2 - Sent -->
+                            <div class="message sent">
+                                <img src="https://via.placeholder.com/32x32/2563eb/ffffff?text=HR" alt="HR Team" class="message-avatar">
+                                <div class="message-content">
+                                    <div class="message-text">
+                                        Selamat pagi Rahma! Terima kasih atas ketertarikan Anda. Saya akan mengirimkan detail job description melalui email. Untuk proses seleksi, kami memiliki 3 tahap: screening CV, technical interview, dan final interview dengan team lead.
+                                    </div>
+                                    <div class="message-time">09:05</div>
+                                </div>
+                            </div>
+
+                            <!-- Message 3 - Received -->
+                            <div class="message">
+                                <img src="https://via.placeholder.com/32x32/667eea/ffffff?text=RS" alt="Rahma Sari" class="message-avatar">
+                                <div class="message-content">
+                                    <div class="message-text">
+                                        Baik, terima kasih! Saya sudah menerima email Anda. Untuk technical interview, apakah ada teknologi atau framework khusus yang akan ditest?
+                                    </div>
+                                    <div class="message-time">09:15</div>
+                                </div>
+                            </div>
+
+                            <!-- Message 4 - Sent -->
+                            <div class="message sent">
+                                <img src="https://via.placeholder.com/32x32/2563eb/ffffff?text=HR" alt="HR Team" class="message-avatar">
+                                <div class="message-content">
+                                    <div class="message-text">
+                                        Technical interview akan fokus pada React, JavaScript ES6+, dan CSS modern. Akan ada live coding session dan review portfolio projects Anda. Durasi sekitar 1-1.5 jam.
+                                    </div>
+                                    <div class="message-time">09:20</div>
+                                </div>
+                            </div>
+
+                            <!-- Message 5 - Received -->
+                            <div class="message">
+                                <img src="https://via.placeholder.com/32x32/667eea/ffffff?text=RS" alt="Rahma Sari" class="message-avatar">
+                                <div class="message-content">
+                                    <div class="message-text">
+                                        Perfect! Saya sudah familiar dengan teknologi tersebut. Kapan bisa kita schedule untuk interview?
+                                    </div>
+                                    <div class="message-time">09:25</div>
+                                </div>
+                            </div>
+
+                            <!-- Message 6 - Sent -->
+                            <div class="message sent">
+                                <img src="https://via.placeholder.com/32x32/2563eb/ffffff?text=HR" alt="HR Team" class="message-avatar">
+                                <div class="message-content">
+                                    <div class="message-text">
+                                        Saya akan koordinasi dengan tim technical untuk jadwal interview. Apakah Anda available minggu depan? Saya akan informasikan jadwal pasti dalam 2-3 hari kerja.
+                                    </div>
+                                    <div class="message-time">09:30</div>
+                                </div>
+                            </div>
+
+                            <!-- Message 7 - Received -->
+                            <div class="message">
+                                <img src="https://via.placeholder.com/32x32/667eea/ffffff?text=RS" alt="Rahma Sari" class="message-avatar">
+                                <div class="message-content">
+                                    <div class="message-text">
+                                        Terima kasih atas kesempatan interview nya! Saya sangat antusias dan akan mempersiapkan diri dengan baik. Ditunggu kabar selanjutnya 😊
+                                    </div>
+                                    <div class="message-time">10:30</div>
+                                </div>
+                            </div>
+
+                            <!-- Typing Indicator -->
+                            <div class="typing-indicator">
+                                <img src="https://via.placeholder.com/32x32/667eea/ffffff?text=RS" alt="Rahma Sari" class="message-avatar">
+                                <span>Rahma sedang mengetik</span>
+                                <div class="typing-dots">
+                                    <div class="typing-dot"></div>
+                                    <div class="typing-dot"></div>
+                                    <div class="typing-dot"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Message Input -->
+                        <div class="message-input-area">
+                            <div class="message-actions mb-2">
+                                <button class="action-btn" title="Attach File">
+                                    <i class="fas fa-paperclip"></i>
+                                </button>
+                                <button class="action-btn" title="Schedule Meeting">
+                                    <i class="fas fa-calendar-plus"></i>
+                                </button>
+                                <button class="action-btn" title="Send Template">
+                                    <i class="fas fa-file-alt"></i>
+                                </button>
+                                <button class="action-btn" title="Voice Message">
+                                    <i class="fas fa-microphone"></i>
+                                </button>
+                            </div>
+                            <div class="message-input">
+                                <input type="text" placeholder="Ketik pesan...">
+                                <button type="button">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile sidebar toggle
+            const sidebarToggle = document.querySelector('.navbar-toggler');
+            const sidebar = document.querySelector('.sidebar');
+            
+            if (sidebarToggle && sidebar) {
+                sidebarToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('show');
+                });
+            }
+
+            // Mobile chat sidebar toggle
+            const mobileToggle = document.getElementById('mobileToggle');
+            const chatSidebar = document.getElementById('chatSidebar');
+            
+            if (mobileToggle && chatSidebar) {
+                mobileToggle.addEventListener('click', function() {
+                    chatSidebar.classList.toggle('show');
+                });
+            }
+
+            // Chat item selection
+            document.querySelectorAll('.chat-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    // Remove active class from all items
+                    document.querySelectorAll('.chat-item').forEach(i => i.classList.remove('active'));
+                    // Add active class to clicked item
+                    this.classList.add('active');
+                    
+                    // Remove unread badge
+                    const badge = this.querySelector('.unread-badge');
+                    if (badge) badge.remove();
+                    
+                    // On mobile, hide sidebar when chat is selected
+                    if (window.innerWidth <= 768) {
+                        chatSidebar.classList.remove('show');
+                    }
+                    
+                    const chatId = this.dataset.chat;
+                    loadChat(chatId);
+                });
+            });
+
+            // Filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const filter = this.dataset.filter;
+                    filterChats(filter);
+                });
+            });
+
+            // Message input
+            const messageInput = document.querySelector('.message-input input');
+            const sendButton = document.querySelector('.message-input button');
+            
+            if (messageInput && sendButton) {
+                messageInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' && this.value.trim()) {
+                        sendMessage(this.value);
+                        this.value = '';
+                    }
+                });
+                
+                sendButton.addEventListener('click', function() {
+                    if (messageInput.value.trim()) {
+                        sendMessage(messageInput.value);
+                        messageInput.value = '';
+                    }
+                });
+            }
+
+            // Auto-scroll to bottom of chat
+            scrollToBottom();
+        });
+
+        function loadChat(chatId) {
+            console.log('Loading chat for:', chatId);
+            // Implementation to load specific chat messages
+        }
+
+        function filterChats(filter) {
+            console.log('Filtering chats by:', filter);
+            // Implementation to filter chat list
+        }
+
+        function sendMessage(message) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageElement = document.createElement('div');
+            messageElement.className = 'message sent';
+            messageElement.innerHTML = `
+                <img src="https://via.placeholder.com/32x32/2563eb/ffffff?text=HR" alt="HR Team" class="message-avatar">
+                <div class="message-content">
+                    <div class="message-text">${message}</div>
+                    <div class="message-time">${new Date().toLocaleTimeString('id-ID', {hour: '2-digit', minute: '2-digit'})}</div>
+                </div>
+            `;
+            
+            chatMessages.appendChild(messageElement);
+            scrollToBottom();
+        }
+
+        function scrollToBottom() {
+            const chatMessages = document.getElementById('chatMessages');
+            if (chatMessages) {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        }
+    </script>
+</body>
+</html>

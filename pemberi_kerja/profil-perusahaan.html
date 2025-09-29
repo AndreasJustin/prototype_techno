@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Perusahaan - NaviKarir</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #64748b;
+            --accent-color: #f59e0b;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --light-bg: #f8fafc;
+            --dark-text: #1e293b;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--dark-text);
+            background-color: var(--light-bg);
+        }
+
+        /* Header Styles */
+        .main-header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-color) !important;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: var(--secondary-color) !important;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary-color) !important;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            background: white;
+            min-height: calc(100vh - 76px);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            padding: 0;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 1rem 0;
+        }
+
+        .sidebar-menu li {
+            margin: 0;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background-color: var(--light-bg);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+        }
+
+        .sidebar-menu i {
+            width: 20px;
+            margin-right: 12px;
+            font-size: 1.1rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            background: white;
+            min-height: calc(100vh - 76px);
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--dark-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+        }
+
+        /* Cards */
+        .card {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            background-color: var(--light-bg);
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+        }
+
+        /* Form Styles */
+        .form-label {
+            font-weight: 500;
+            color: var(--dark-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control, .form-select {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
+        }
+
+        /* Logo Upload */
+        .logo-upload {
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: border-color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .logo-upload:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(37, 99, 235, 0.05);
+        }
+
+        .logo-preview {
+            max-width: 150px;
+            max-height: 150px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        /* Stats Cards */
+        .profile-stats {
+            background: linear-gradient(135deg, var(--primary-color), #1d4ed8);
+            color: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        /* Button Styles */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), #1d4ed8);
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+        }
+
+        .btn-outline-primary {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -100%;
+                top: 76px;
+                width: 280px;
+                height: calc(100vh - 76px);
+                transition: left 0.3s ease;
+                z-index: 999;
+            }
+
+            .sidebar.show {
+                left: 0;
+            }
+
+            .main-content {
+                margin: 1rem 0.5rem;
+                padding: 1.5rem;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container-fluid">
+                <!-- Brand -->
+                <a class="navbar-brand" href="../index.html">
+                    <i class="fas fa-briefcase me-2"></i>NaviKarir
+                </a>
+
+                <!-- Mobile Toggle -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Navigation -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="./dashboard.html">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./manajemen-lowongan.html">Lowongan</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./pencarian-talenta.html">Pencarian Talenta</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./manajemen-pelamar.html">Pelamar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./pesan.html">Pesan</a>
+                        </li>
+                    </ul>
+
+                    <!-- User Menu -->
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user-circle me-1"></i>
+                                <span>PT. Teknologi Maju</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profil</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Pengaturan</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="./login.html"><i class="fas fa-sign-out-alt me-2"></i>Keluar</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav class="col-md-3 col-lg-2 sidebar d-md-block">
+                <ul class="sidebar-menu">
+                    <li>
+                        <a href="./dashboard.html">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./manajemen-lowongan.html">
+                            <i class="fas fa-briefcase"></i>
+                            <span>Manajemen Lowongan</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./buat-lowongan.html">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Buat Lowongan</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./pencarian-talenta.html">
+                            <i class="fas fa-search"></i>
+                            <span>Pencarian Talenta</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./manajemen-pelamar.html">
+                            <i class="fas fa-users"></i>
+                            <span>Manajemen Pelamar</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./profil-kandidat.html">
+                            <i class="fas fa-user-graduate"></i>
+                            <span>Profil Kandidat</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./pesan.html">
+                            <i class="fas fa-comments"></i>
+                            <span>Pesan Langsung</span>
+                        </a>
+                    </li>
+                    <li>
+                        <hr style="margin: 1rem 1.5rem; border-color: var(--border-color);">
+                    </li>
+                    <li>
+                        <a href="#" class="active">
+                            <i class="fas fa-building"></i>
+                            <span>Profil Perusahaan</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-cog"></i>
+                            <span>Pengaturan</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="col-md-9 col-lg-10 ms-sm-auto">
+                <div class="main-content">
+                    <!-- Page Header -->
+                    <div class="page-header">
+                        <h1 class="page-title">Profil Perusahaan</h1>
+                        <p class="page-subtitle">Kelola informasi perusahaan yang akan dilihat oleh kandidat</p>
+                    </div>
+
+                    <!-- Breadcrumb -->
+                    <nav aria-label="breadcrumb" class="mb-4">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="./dashboard.html">Dashboard</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Profil Perusahaan</li>
+                        </ol>
+                    </nav>
+
+                    <!-- Profile Stats -->
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-3">
+                            <div class="profile-stats text-center">
+                                <div class="stat-number">4.8</div>
+                                <div>Rating Perusahaan</div>
+                                <small class="opacity-75">Dari 127 review</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="profile-stats text-center">
+                                <div class="stat-number">2,847</div>
+                                <div>Profile Views</div>
+                                <small class="opacity-75">Bulan ini</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="profile-stats text-center">
+                                <div class="stat-number">95%</div>
+                                <div>Profile Complete</div>
+                                <small class="opacity-75">Lengkapi untuk lebih baik</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="profile-stats text-center">
+                                <div class="stat-number">1,204</div>
+                                <div>Followers</div>
+                                <small class="opacity-75">Mahasiswa tertarik</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Company Profile Form -->
+                    <div class="row">
+                        <!-- Logo & Basic Info -->
+                        <div class="col-lg-4 mb-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-image me-2"></i>
+                                        Logo & Identitas
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <!-- Logo Upload -->
+                                    <div class="logo-upload mb-4" onclick="document.getElementById('logoInput').click()">
+                                        <input type="file" id="logoInput" accept="image/*" style="display: none;">
+                                        <div id="logoPreview">
+                                            <img src="https://via.placeholder.com/150x150/2563eb/ffffff?text=LOGO" alt="Company Logo" class="logo-preview mb-3">
+                                            <p class="text-muted mb-0">Klik untuk mengubah logo</p>
+                                            <small class="text-muted">Format: JPG, PNG (Max 2MB)</small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Company Name -->
+                                    <div class="mb-3">
+                                        <label for="companyName" class="form-label">Nama Perusahaan</label>
+                                        <input type="text" class="form-control" id="companyName" value="PT. Teknologi Maju">
+                                    </div>
+
+                                    <!-- Industry -->
+                                    <div class="mb-3">
+                                        <label for="industry" class="form-label">Industri</label>
+                                        <select class="form-select" id="industry">
+                                            <option value="teknologi">Teknologi Informasi</option>
+                                            <option value="finance">Keuangan & Perbankan</option>
+                                            <option value="education">Pendidikan</option>
+                                            <option value="healthcare">Kesehatan</option>
+                                            <option value="retail">Retail & E-commerce</option>
+                                            <option value="manufacturing">Manufaktur</option>
+                                            <option value="consulting">Konsultasi</option>
+                                            <option value="media">Media & Komunikasi</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Company Size -->
+                                    <div class="mb-3">
+                                        <label for="companySize" class="form-label">Ukuran Perusahaan</label>
+                                        <select class="form-select" id="companySize">
+                                            <option value="startup">Startup (1-10 karyawan)</option>
+                                            <option value="small">Kecil (11-50 karyawan)</option>
+                                            <option value="medium" selected>Menengah (51-200 karyawan)</option>
+                                            <option value="large">Besar (201-1000 karyawan)</option>
+                                            <option value="enterprise">Enterprise (1000+ karyawan)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Detailed Information -->
+                        <div class="col-lg-8">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        Informasi Detail
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <!-- Company Description -->
+                                        <div class="col-12 mb-3">
+                                            <label for="description" class="form-label">Deskripsi Perusahaan</label>
+                                            <textarea class="form-control" id="description" rows="4" placeholder="Ceritakan tentang perusahaan Anda, visi, misi, dan apa yang membuat perusahaan unik...">PT. Teknologi Maju adalah perusahaan teknologi terdepan yang fokus pada pengembangan solusi digital inovatif. Kami berkomitmen untuk menciptakan teknologi yang memudahkan kehidupan sehari-hari dan mendorong transformasi digital di Indonesia.</textarea>
+                                        </div>
+
+                                        <!-- Location -->
+                                        <div class="col-md-6 mb-3">
+                                            <label for="location" class="form-label">Lokasi Kantor Pusat</label>
+                                            <input type="text" class="form-control" id="location" value="Jakarta Selatan, DKI Jakarta">
+                                        </div>
+
+                                        <!-- Website -->
+                                        <div class="col-md-6 mb-3">
+                                            <label for="website" class="form-label">Website</label>
+                                            <input type="url" class="form-control" id="website" value="https://teknologimaju.com">
+                                        </div>
+
+                                        <!-- Founded Year -->
+                                        <div class="col-md-6 mb-3">
+                                            <label for="founded" class="form-label">Tahun Didirikan</label>
+                                            <input type="number" class="form-control" id="founded" value="2018" min="1900" max="2025">
+                                        </div>
+
+                                        <!-- Employee Count -->
+                                        <div class="col-md-6 mb-3">
+                                            <label for="employeeCount" class="form-label">Jumlah Karyawan</label>
+                                            <input type="number" class="form-control" id="employeeCount" value="127">
+                                        </div>
+
+                                        <!-- Contact Email -->
+                                        <div class="col-md-6 mb-3">
+                                            <label for="contactEmail" class="form-label">Email Kontak</label>
+                                            <input type="email" class="form-control" id="contactEmail" value="hr@teknologimaju.com">
+                                        </div>
+
+                                        <!-- Phone -->
+                                        <div class="col-md-6 mb-3">
+                                            <label for="phone" class="form-label">Nomor Telepon</label>
+                                            <input type="tel" class="form-control" id="phone" value="+62-21-1234567">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Culture & Benefits -->
+                            <div class="card mt-4">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-heart me-2"></i>
+                                        Budaya Kerja & Benefits
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <!-- Work Culture -->
+                                        <div class="col-12 mb-3">
+                                            <label for="culture" class="form-label">Budaya Kerja</label>
+                                            <textarea class="form-control" id="culture" rows="3" placeholder="Deskripsikan budaya kerja di perusahaan Anda...">Kami menciptakan lingkungan kerja yang kolaboratif, inovatif, dan mendukung work-life balance. Tim kami terdiri dari profesional muda yang passionate dengan teknologi dan selalu siap untuk belajar hal baru.</textarea>
+                                        </div>
+
+                                        <!-- Benefits -->
+                                        <div class="col-12 mb-3">
+                                            <label class="form-label">Benefits & Fasilitas</label>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input" type="checkbox" value="" id="benefit1" checked>
+                                                        <label class="form-check-label" for="benefit1">
+                                                            Asuransi Kesehatan
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input" type="checkbox" value="" id="benefit2" checked>
+                                                        <label class="form-check-label" for="benefit2">
+                                                            Flexible Working Hours
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input" type="checkbox" value="" id="benefit3" checked>
+                                                        <label class="form-check-label" for="benefit3">
+                                                            Remote Work Option
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input" type="checkbox" value="" id="benefit4">
+                                                        <label class="form-check-label" for="benefit4">
+                                                            Annual Bonus
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input" type="checkbox" value="" id="benefit5" checked>
+                                                        <label class="form-check-label" for="benefit5">
+                                                            Training & Development
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input" type="checkbox" value="" id="benefit6">
+                                                        <label class="form-check-label" for="benefit6">
+                                                            Meal Allowance
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input" type="checkbox" value="" id="benefit7" checked>
+                                                        <label class="form-check-label" for="benefit7">
+                                                            Career Development
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input" type="checkbox" value="" id="benefit8">
+                                                        <label class="form-check-label" for="benefit8">
+                                                            Company Retreat
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="d-flex gap-3 mt-4">
+                                <button type="button" class="btn btn-primary">
+                                    <i class="fas fa-save me-2"></i>
+                                    Simpan Perubahan
+                                </button>
+                                <button type="button" class="btn btn-outline-primary">
+                                    <i class="fas fa-eye me-2"></i>
+                                    Preview Profil
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary">
+                                    <i class="fas fa-undo me-2"></i>
+                                    Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // Mobile sidebar toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarToggle = document.querySelector('.navbar-toggler');
+            const sidebar = document.querySelector('.sidebar');
+            
+            if (sidebarToggle && sidebar) {
+                sidebarToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('show');
+                });
+                
+                document.addEventListener('click', function(e) {
+                    if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+                        sidebar.classList.remove('show');
+                    }
+                });
+            }
+
+            // Logo upload preview
+            const logoInput = document.getElementById('logoInput');
+            const logoPreview = document.getElementById('logoPreview');
+            
+            logoInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        logoPreview.innerHTML = `
+                            <img src="${e.target.result}" alt="Company Logo" class="logo-preview mb-3">
+                            <p class="text-muted mb-0">Klik untuk mengubah logo</p>
+                            <small class="text-muted">Format: JPG, PNG (Max 2MB)</small>
+                        `;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

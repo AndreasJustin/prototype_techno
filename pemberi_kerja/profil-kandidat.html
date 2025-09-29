@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Kandidat - NaviKarir</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #64748b;
+            --accent-color: #f59e0b;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --light-bg: #f8fafc;
+            --dark-text: #1e293b;
+            --border-color: #e2e8f0;
+            --ai-color: #8b5cf6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--dark-text);
+            background-color: var(--light-bg);
+        }
+
+        /* Header & Navigation */
+        .main-header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-color) !important;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: var(--secondary-color) !important;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary-color) !important;
+        }
+
+        .sidebar {
+            background: white;
+            min-height: calc(100vh - 76px);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            padding: 0;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 1rem 0;
+        }
+
+        .sidebar-menu li {
+            margin: 0;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background-color: var(--light-bg);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+        }
+
+        .sidebar-menu i {
+            width: 20px;
+            margin-right: 12px;
+            font-size: 1.1rem;
+        }
+
+        .main-content {
+            background: white;
+            min-height: calc(100vh - 76px);
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* Profile Header */
+        .profile-header {
+            background: linear-gradient(135deg, var(--primary-color), #1d4ed8);
+            color: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(50%, -50%);
+        }
+
+        .candidate-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .ai-match-score {
+            background: linear-gradient(135deg, var(--ai-color), #7c3aed);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+
+        /* Content Cards */
+        .content-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .card-title i {
+            margin-right: 0.75rem;
+            color: var(--primary-color);
+        }
+
+        /* Skills */
+        .skill-category {
+            margin-bottom: 1.5rem;
+        }
+
+        .skill-category:last-child {
+            margin-bottom: 0;
+        }
+
+        .skill-category h6 {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--dark-text);
+        }
+
+        .skill-tag {
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            margin: 0.25rem 0.25rem 0.25rem 0;
+            display: inline-block;
+            border: 1px solid var(--border-color);
+        }
+
+        .skill-tag.advanced {
+            background-color: rgba(16, 185, 129, 0.1);
+            border-color: var(--success-color);
+            color: var(--success-color);
+        }
+
+        .skill-tag.intermediate {
+            background-color: rgba(245, 158, 11, 0.1);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .skill-tag.beginner {
+            background-color: rgba(37, 99, 235, 0.1);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        /* Experience Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 1rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.25rem;
+            top: 1.5rem;
+            width: 12px;
+            height: 12px;
+            background: var(--primary-color);
+            border: 3px solid white;
+            border-radius: 50%;
+            box-shadow: 0 0 0 3px var(--border-color);
+        }
+
+        .timeline-date {
+            font-size: 0.875rem;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-company {
+            color: var(--primary-color);
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+        }
+
+        /* Education */
+        .education-item {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .university-badge {
+            background: linear-gradient(135deg, var(--primary-color), #1d4ed8);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: inline-block;
+            margin-bottom: 0.75rem;
+        }
+
+        .gpa-badge {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Portfolio */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .portfolio-item {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .portfolio-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .portfolio-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .portfolio-content {
+            padding: 1.5rem;
+        }
+
+        .portfolio-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .portfolio-tech {
+            color: var(--secondary-color);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Action Buttons */
+        .action-section {
+            background: var(--light-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), #1d4ed8);
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 2rem;
+            font-weight: 500;
+            margin: 0.5rem;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success-color), #059669);
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 2rem;
+            font-weight: 500;
+            margin: 0.5rem;
+        }
+
+        .btn-outline-primary {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            border-radius: 8px;
+            padding: 0.75rem 2rem;
+            font-weight: 500;
+            margin: 0.5rem;
+        }
+
+        .btn-outline-secondary {
+            border: 2px solid var(--secondary-color);
+            color: var(--secondary-color);
+            border-radius: 8px;
+            padding: 0.75rem 2rem;
+            font-weight: 500;
+            margin: 0.5rem;
+        }
+
+        /* Contact Info */
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .contact-item i {
+            width: 20px;
+            color: var(--primary-color);
+            margin-right: 0.75rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -100%;
+                top: 76px;
+                width: 280px;
+                height: calc(100vh - 76px);
+                transition: left 0.3s ease;
+                z-index: 999;
+            }
+
+            .sidebar.show {
+                left: 0;
+            }
+
+            .main-content {
+                margin: 1rem 0.5rem;
+                padding: 1.5rem;
+            }
+
+            .profile-header {
+                padding: 1.5rem;
+                text-align: center;
+            }
+
+            .profile-stats {
+                justify-content: center;
+                gap: 1rem;
+            }
+
+            .candidate-avatar {
+                width: 100px;
+                height: 100px;
+            }
+
+            .timeline {
+                padding-left: 1rem;
+            }
+
+            .timeline::before {
+                left: 0.5rem;
+            }
+
+            .timeline-item::before {
+                left: -1.75rem;
+            }
+
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="../index.html">
+                    <i class="fas fa-briefcase me-2"></i>NaviKarir
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="./dashboard.html">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./manajemen-lowongan.html">Lowongan</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./pencarian-talenta.html">Pencarian Talenta</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./manajemen-pelamar.html">Pelamar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./pesan.html">Pesan</a>
+                        </li>
+                    </ul>
+
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user-circle me-1"></i>
+                                <span>PT. Teknologi Maju</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="./profil-perusahaan.html"><i class="fas fa-user me-2"></i>Profil</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Pengaturan</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="./login.html"><i class="fas fa-sign-out-alt me-2"></i>Keluar</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav class="col-md-3 col-lg-2 sidebar d-md-block">
+                <ul class="sidebar-menu">
+                    <li>
+                        <a href="./dashboard.html">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./manajemen-lowongan.html">
+                            <i class="fas fa-briefcase"></i>
+                            <span>Manajemen Lowongan</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./buat-lowongan.html">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Buat Lowongan</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./pencarian-talenta.html">
+                            <i class="fas fa-search"></i>
+                            <span>Pencarian Talenta</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./manajemen-pelamar.html">
+                            <i class="fas fa-users"></i>
+                            <span>Manajemen Pelamar</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="active">
+                            <i class="fas fa-user-graduate"></i>
+                            <span>Profil Kandidat</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="./pesan.html">
+                            <i class="fas fa-comments"></i>
+                            <span>Pesan Langsung</span>
+                        </a>
+                    </li>
+                    <li>
+                        <hr style="margin: 1rem 1.5rem; border-color: var(--border-color);">
+                    </li>
+                    <li>
+                        <a href="./profil-perusahaan.html">
+                            <i class="fas fa-building"></i>
+                            <span>Profil Perusahaan</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-cog"></i>
+                            <span>Pengaturan</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="col-md-9 col-lg-10 ms-sm-auto">
+                <div class="main-content">
+                    <!-- Breadcrumb -->
+                    <nav aria-label="breadcrumb" class="mb-4">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="./dashboard.html">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="./manajemen-pelamar.html">Manajemen Pelamar</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Rahma Sari</li>
+                        </ol>
+                    </nav>
+
+                    <!-- Profile Header -->
+                    <div class="profile-header">
+                        <div class="row align-items-center">
+                            <div class="col-md-3 text-center">
+                                <img src="https://via.placeholder.com/120x120/667eea/ffffff?text=RS" alt="Rahma Sari" class="candidate-avatar">
+                            </div>
+                            <div class="col-md-6">
+                                <div class="ai-match-score">
+                                    <i class="fas fa-robot me-2"></i>92% AI Match Score
+                                </div>
+                                <h2 class="mb-2">Rahma Sari</h2>
+                                <h5 class="mb-3 opacity-90">Frontend Developer</h5>
+                                <div class="profile-stats">
+                                    <div class="stat-item">
+                                        <div class="stat-number">3.8</div>
+                                        <div class="stat-label">IPK</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">2024</div>
+                                        <div class="stat-label">Lulus</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">2+</div>
+                                        <div class="stat-label">Pengalaman</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 text-end">
+                                <div class="mb-2">
+                                    <span class="badge bg-success fs-6">Available</span>
+                                </div>
+                                <div class="small opacity-90">
+                                    <i class="fas fa-map-marker-alt me-1"></i>Jakarta, Indonesia<br>
+                                    <i class="fas fa-clock me-1"></i>Aktif 2 jam lalu
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="action-section">
+                        <h5 class="mb-3">Tindakan Cepat</h5>
+                        <button class="btn btn-success">
+                            <i class="fas fa-user-plus me-2"></i>Undang ke Interview
+                        </button>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-envelope me-2"></i>Kirim Pesan
+                        </button>
+                        <button class="btn btn-outline-primary">
+                            <i class="fas fa-download me-2"></i>Download CV
+                        </button>
+                        <button class="btn btn-outline-secondary">
+                            <i class="fas fa-star me-2"></i>Simpan Kandidat
+                        </button>
+                    </div>
+
+                    <div class="row">
+                        <!-- Left Column -->
+                        <div class="col-lg-8">
+                            <!-- About -->
+                            <div class="content-card">
+                                <h4 class="card-title">
+                                    <i class="fas fa-user"></i>Tentang Saya
+                                </h4>
+                                <p>Mahasiswa akhir Teknik Informatika di Universitas Indonesia dengan passion yang kuat dalam pengembangan web frontend. Saya memiliki pengalaman 2 tahun sebagai freelancer dan magang di beberapa startup teknologi. Saya antusias terhadap teknologi terbaru dan selalu berusaha mengembangkan skill untuk menciptakan user experience yang luar biasa.</p>
+                                <p>Saya memiliki kemampuan yang kuat dalam JavaScript ecosystem, terutama React dan framework modern lainnya. Selain itu, saya juga memiliki pemahaman yang baik tentang UI/UX design principles dan dapat berkolaborasi efektif dengan tim design.</p>
+                            </div>
+
+                            <!-- Skills -->
+                            <div class="content-card">
+                                <h4 class="card-title">
+                                    <i class="fas fa-code"></i>Keahlian Teknis
+                                </h4>
+                                <div class="skill-category">
+                                    <h6>Frontend Development</h6>
+                                    <span class="skill-tag advanced">React</span>
+                                    <span class="skill-tag advanced">JavaScript</span>
+                                    <span class="skill-tag advanced">TypeScript</span>
+                                    <span class="skill-tag advanced">HTML/CSS</span>
+                                    <span class="skill-tag intermediate">Vue.js</span>
+                                    <span class="skill-tag intermediate">Next.js</span>
+                                </div>
+                                <div class="skill-category">
+                                    <h6>Styling & Design</h6>
+                                    <span class="skill-tag advanced">Tailwind CSS</span>
+                                    <span class="skill-tag advanced">Bootstrap</span>
+                                    <span class="skill-tag intermediate">SASS/SCSS</span>
+                                    <span class="skill-tag intermediate">Figma</span>
+                                    <span class="skill-tag beginner">Adobe XD</span>
+                                </div>
+                                <div class="skill-category">
+                                    <h6>Tools & Others</h6>
+                                    <span class="skill-tag advanced">Git/GitHub</span>
+                                    <span class="skill-tag intermediate">Webpack</span>
+                                    <span class="skill-tag intermediate">Docker</span>
+                                    <span class="skill-tag beginner">AWS</span>
+                                </div>
+                            </div>
+
+                            <!-- Experience -->
+                            <div class="content-card">
+                                <h4 class="card-title">
+                                    <i class="fas fa-briefcase"></i>Pengalaman Kerja
+                                </h4>
+                                <div class="timeline">
+                                    <div class="timeline-item">
+                                        <div class="timeline-date">Maret 2024 - Sekarang</div>
+                                        <div class="timeline-title">Frontend Developer Intern</div>
+                                        <div class="timeline-company">PT. Teknologi Muda Jakarta</div>
+                                        <p>Mengembangkan dashboard admin untuk platform e-commerce menggunakan React dan TypeScript. Berhasil meningkatkan performa loading page sebesar 40% dan mengimplementasikan responsive design untuk mobile users.</p>
+                                        <div class="mt-2">
+                                            <span class="skill-tag">React</span>
+                                            <span class="skill-tag">TypeScript</span>
+                                            <span class="skill-tag">Tailwind CSS</span>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-date">Agustus 2023 - Februari 2024</div>
+                                        <div class="timeline-title">Web Developer Freelancer</div>
+                                        <div class="timeline-company">Various Clients</div>
+                                        <p>Mengerjakan berbagai project website untuk UMKM dan startup kecil. Menangani full-cycle development mulai dari design consultation hingga deployment. Berhasil menyelesaikan 8+ project dengan rating kepuasan klien 4.8/5.</p>
+                                        <div class="mt-2">
+                                            <span class="skill-tag">React</span>
+                                            <span class="skill-tag">WordPress</span>
+                                            <span class="skill-tag">JavaScript</span>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-date">Juni 2023 - Juli 2023</div>
+                                        <div class="timeline-title">UI/UX Design Intern</div>
+                                        <div class="timeline-company">Startup Edutech Jakarta</div>
+                                        <p>Membantu merancang user interface untuk aplikasi pembelajaran online. Melakukan user research, membuat wireframe, dan prototype interaktif menggunakan Figma.</p>
+                                        <div class="mt-2">
+                                            <span class="skill-tag">Figma</span>
+                                            <span class="skill-tag">User Research</span>
+                                            <span class="skill-tag">Prototyping</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Portfolio -->
+                            <div class="content-card">
+                                <h4 class="card-title">
+                                    <i class="fas fa-folder-open"></i>Portfolio & Project
+                                </h4>
+                                <div class="portfolio-grid">
+                                    <div class="portfolio-item">
+                                        <img src="https://via.placeholder.com/300x200/667eea/ffffff?text=E-Commerce" alt="E-Commerce Dashboard" class="portfolio-image">
+                                        <div class="portfolio-content">
+                                            <div class="portfolio-title">E-Commerce Dashboard</div>
+                                            <div class="portfolio-tech">React • TypeScript • Tailwind CSS</div>
+                                            <p class="small text-muted">Dashboard admin untuk mengelola produk, order, dan analytics e-commerce dengan fitur real-time updates.</p>
+                                            <a href="#" class="btn btn-outline-primary btn-sm">
+                                                <i class="fas fa-external-link-alt me-1"></i>Live Demo
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="portfolio-item">
+                                        <img src="https://via.placeholder.com/300x200/10b981/ffffff?text=Learning+App" alt="Learning App" class="portfolio-image">
+                                        <div class="portfolio-content">
+                                            <div class="portfolio-title">Learning Management App</div>
+                                            <div class="portfolio-tech">React • Node.js • MongoDB</div>
+                                            <p class="small text-muted">Platform pembelajaran online dengan fitur video streaming, quiz interaktif, dan progress tracking.</p>
+                                            <a href="#" class="btn btn-outline-primary btn-sm">
+                                                <i class="fas fa-external-link-alt me-1"></i>Live Demo
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="portfolio-item">
+                                        <img src="https://via.placeholder.com/300x200/f59e0b/ffffff?text=Portfolio+Web" alt="Portfolio Website" class="portfolio-image">
+                                        <div class="portfolio-content">
+                                            <div class="portfolio-title">Personal Portfolio Website</div>
+                                            <div class="portfolio-tech">Next.js • Framer Motion • SCSS</div>
+                                            <p class="small text-muted">Website portfolio personal dengan animasi interaktif dan optimized performance menggunakan Next.js.</p>
+                                            <a href="#" class="btn btn-outline-primary btn-sm">
+                                                <i class="fas fa-external-link-alt me-1"></i>Live Demo
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Education -->
+                            <div class="content-card">
+                                <h4 class="card-title">
+                                    <i class="fas fa-graduation-cap"></i>Pendidikan
+                                </h4>
+                                <div class="education-item">
+                                    <div class="university-badge">Universitas Indonesia</div>
+                                    <h6>Sarjana Teknik Informatika</h6>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="text-muted">2020 - 2024</span>
+                                        <span class="gpa-badge">IPK: 3.82</span>
+                                    </div>
+                                    <p class="mb-2">Fokus studi: Software Engineering, Web Development, Human-Computer Interaction</p>
+                                    <div class="mb-2">
+                                        <strong>Prestasi:</strong>
+                                        <ul class="mt-1">
+                                            <li>Juara 2 Hackathon Web Development UI 2023</li>
+                                            <li>Best Project Award - Software Engineering Course</li>
+                                            <li>Dean's List 4 Semester</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <strong>Organisasi:</strong> Google Developer Student Club UI (Web Development Lead)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="col-lg-4">
+                            <!-- Contact Information -->
+                            <div class="content-card">
+                                <h4 class="card-title">
+                                    <i class="fas fa-address-card"></i>Informasi Kontak
+                                </h4>
+                                <div class="contact-item">
+                                    <i class="fas fa-envelope"></i>
+                                    <span>rahma.sari@email.com</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-phone"></i>
+                                    <span>+62 812-3456-7890</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Jakarta Selatan, DKI Jakarta</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fab fa-linkedin"></i>
+                                    <span>linkedin.com/in/rahmasari</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fab fa-github"></i>
+                                    <span>github.com/rahmasari</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-globe"></i>
+                                    <span>rahmasari.dev</span>
+                                </div>
+                            </div>
+
+                            <!-- Languages -->
+                            <div class="content-card">
+                                <h4 class="card-title">
+                                    <i class="fas fa-language"></i>Bahasa
+                                </h4>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Bahasa Indonesia</span>
+                                    <span class="skill-tag advanced">Native</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>English</span>
+                                    <span class="skill-tag advanced">Fluent</span>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span>日本語 (Japanese)</span>
+                                    <span class="skill-tag beginner">Basic</span>
+                                </div>
+                            </div>
+
+                            <!-- Certificates -->
+                            <div class="content-card">
+                                <h4 class="card-title">
+                                    <i class="fas fa-certificate"></i>Sertifikasi
+                                </h4>
+                                <div class="mb-3">
+                                    <div class="fw-semibold">React Developer Certification</div>
+                                    <div class="small text-muted">Meta • 2023</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="fw-semibold">JavaScript Algorithms and Data Structures</div>
+                                    <div class="small text-muted">freeCodeCamp • 2023</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="fw-semibold">Google UX Design Certificate</div>
+                                    <div class="small text-muted">Google • 2022</div>
+                                </div>
+                                <div>
+                                    <div class="fw-semibold">AWS Cloud Practitioner</div>
+                                    <div class="small text-muted">Amazon Web Services • 2024</div>
+                                </div>
+                            </div>
+
+                            <!-- Availability -->
+                            <div class="content-card">
+                                <h4 class="card-title">
+                                    <i class="fas fa-calendar-check"></i>Ketersediaan
+                                </h4>
+                                <div class="mb-3">
+                                    <div class="fw-semibold text-success">Available for Work</div>
+                                    <div class="small text-muted">Ready to start immediately</div>
+                                </div>
+                                <div class="mb-2">
+                                    <strong>Preferred Work Type:</strong><br>
+                                    <span class="skill-tag">Full-time</span>
+                                    <span class="skill-tag">Remote</span>
+                                    <span class="skill-tag">Hybrid</span>
+                                </div>
+                                <div class="mb-2">
+                                    <strong>Expected Salary:</strong><br>
+                                    <span class="text-muted">Rp 8.000.000 - Rp 12.000.000</span>
+                                </div>
+                                <div>
+                                    <strong>Notice Period:</strong><br>
+                                    <span class="text-muted">Available immediately</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile sidebar toggle
+            const sidebarToggle = document.querySelector('.navbar-toggler');
+            const sidebar = document.querySelector('.sidebar');
+            
+            if (sidebarToggle && sidebar) {
+                sidebarToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('show');
+                });
+                
+                document.addEventListener('click', function(e) {
+                    if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+                        sidebar.classList.remove('show');
+                    }
+                });
+            }
+
+            // Portfolio item interactions
+            document.querySelectorAll('.portfolio-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    console.log('Portfolio item clicked');
+                    // Add modal or detailed view logic here
+                });
+            });
+        });
+    </script>
+</body>
+</html>
